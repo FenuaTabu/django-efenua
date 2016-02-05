@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+
+{% block breadcrumbs %}
+	{{ block.super }}
+	{% include "efenua/breadcrumbs.html" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="btn-toolbar" role="toolbar">
+	<div class="btn-group" role="group">
+		{% include "efenua/toolbar.html" with menu=action_static %}
+	</div>
+</div>
+				
+<div class="row">
+	<div class="col-md-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+                <h3 class="panel-title">---</h3>
+            </div>
+            <div class="panel-body">
+				
+				<form action="" method="post">
+				    {% csrf_token %}
+                    {% if form.non_field_errors %}{{ form.non_field_errors }}{% endif %}
+                    {% for fieldset in form.fieldsets %}
+                      <fieldset class="fieldset_{{ fieldset.name }}">
+                      {% if fieldset.legend %}
+                        <legend>{{ fieldset.legend }}</legend>
+                      {% endif %}
+                      {% if fieldset.description %}
+                        <p class="description">{{ fieldset.description }}</p>
+                      {% endif %}
+                      <div class="row">
+                      {% for field in fieldset %}
+                        {% if field.is_hidden %}
+                          {{ field }}
+                        {% else %}
+                          <div class="col-sm-12" {{ field.row_attrs }}>
+                            {{ field.errors }}
+                            {% bootstrap_field field %}
+                          </div>
+                        {% endif %}
+                      {% endfor %}
+                      </div>
+                      </fieldset>
+                    {% endfor %}
+                    
+                    <div class="row">
+                        <div class="col-sm-12">
+                            {% block btn %}{% endblock %}
+                        </div>
+                    </div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

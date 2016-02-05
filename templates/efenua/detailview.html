@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load efenua_extras %}
+{% load bootstrap3 %}
+
+{% block breadcrumbs %}
+	{{ block.super }}
+	{% include "efenua/breadcrumbs.html" %}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="col-md-12">
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<div class="btn-toolbar" role="toolbar">
+					<div class="btn-group" role="group">
+						{% include "efenua/toolbar.html" with menu=action_static %}
+					</div>
+				</div>
+			</div>
+
+			<table>
+				{% for field in form %}
+					<tr>
+						<td>{{ field.label }}</td>
+						{% if field.value|get_type == 'list' %}
+							{% for field2 in field.value %}
+								{{ field2 }}
+							{% endfor %}
+						{% endif %}
+						<td>{{ field.value }}</td>
+					</tr>
+				{% endfor %}
+			</table>
+		</div>
+	</div>
+</div>
+
+{% include "efenua/historical.html" with object=object %}
+
+{% endblock %}

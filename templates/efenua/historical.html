@@ -1,0 +1,13 @@
+{% if object.history %}
+<div class="row">
+	<div class="col-md-12">
+		<table class="table">
+			{% for historical in object.history.all %}
+				<tr>
+					<td>{{ historical }}</td>
+				</tr>
+			{% endfor %}
+		</table>
+	</div>
+</div>
+{% endif %}

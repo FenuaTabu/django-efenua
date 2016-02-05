@@ -1,0 +1,17 @@
+{% for item in items %}
+    {% if item.visible %}
+        <li class="{% if item.selected %} active{% endif %}{% if item.children %} dropdown-submenu{% endif %}">
+            <a href="{{ item.url }}">
+            {% if item.icon %}
+                <span class="glyphicon glyphicon-{{ item.icon }}" aria-hidden="true"></span>&nbsp;
+            {% endif %}
+            {{ item.title }}</a>
+            {% if item.children %}
+                {% with items=item.children template_name='bootstrap-navbar-submenu.html' %}
+                   {% include template_name %}
+                {% endwith %}
+            {% endif %}
+        </li>
+    {% endif %}
+{% endfor %}
+
