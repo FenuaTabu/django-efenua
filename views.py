@@ -2,7 +2,7 @@
 from django.views.generic import TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.utils.decorators import method_decorator
 from django.contrib import messages
 from django.shortcuts import redirect
@@ -14,11 +14,12 @@ import django_filters
 from django.contrib.auth.models import User, Group, Permission
 
 from efenua.widgets import DateTimePicker
-from django_select2.forms import Select2MultipleWidget
+from django_select2.forms import Select2MultipleWidget, Select2Widget
 from django import forms
 from efenua.form import Efenuaforms
 
 forms.DateField.widget = DateTimePicker(options={"format": "YYYY-MM-DD","pickTime": False})
+forms.ChoiceField.widget = Select2Widget()
 forms.ModelMultipleChoiceField.widget = Select2MultipleWidget()
 
 class EfenuaTable(tables.Table):
@@ -36,6 +37,7 @@ class EfenuaCreateView(CreateView):
     success_message = "%(msg)s a ete creer avec succes"
     action_static = None
     breadcrumbs = None
+    formset_class = None
 
     def get_success_message(self, cleaned_data):
         return self.success_message % dict(
@@ -47,14 +49,20 @@ class EfenuaCreateView(CreateView):
         context = super(EfenuaCreateView, self).get_context_data(**kwargs)
         if self.action_static is not None: context['action_static'] = self.action_static
         context['breadcrumbs'] = self.breadcrumbs
+        if self.formset_class is not None:
+            if self.request.POST:
+                context['formset'] = self.formset_class(self.request.POST)
+            else:
+                context['formset'] = self.formset_class()
         return context
-    
+            
 # class UpdateView(SuccessMessageMixin, UpdateView):
 class EfenuaUpdateView(UpdateView):
     template_name = 'efenua/updateview.html'
     success_message = "%(msg)s a ete mise a jour avec succes"
     action_static = None
     breadcrumbs = None
+    formset_class = None
 
     def get_success_message(self, cleaned_data):
         return self.success_message % dict(
@@ -66,6 +74,11 @@ class EfenuaUpdateView(UpdateView):
         context = super(EfenuaUpdateView, self).get_context_data(**kwargs)
         if self.action_static is not None: context['action_static'] = self.action_static
         context['breadcrumbs'] = self.breadcrumbs
+        if self.formset_class is not None:
+            if self.request.POST:
+                context['formset'] = self.formset_class(self.request.POST)
+            else:
+                context['formset'] = self.formset_class()
         return context
         
 class EfenuaDeleteView(DeleteView):
@@ -139,7 +152,7 @@ class EfenuaListView(TemplateView):
         context.update(self.context())
         context['table_count'] = self.filter.qs.count()
         return context
-        
+    
 class EfenuaUserFilter(django_filters.FilterSet):
     class Meta:
         model = User
@@ -150,9 +163,10 @@ class EfenuaUserTable(tables.Table):
     actions = tables.TemplateColumn('<a href="{% url \'user-detail\' record.pk %}"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></a> <a href="{% url \'user-update\' record.pk %}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>', verbose_name=" ")
     class Meta:
         model = User
-        fields = ("selectable", "username", "last_name", "actions")
+        fields = ("selectable", "username", "email", "actions")
         attrs = {"class": "table"}   
        
+@method_decorator(login_required, name='dispatch')
 class EfenuaUserListView(EfenuaListView):
     queryset = User.objects.all()
     table_class = EfenuaUserTable
@@ -163,17 +177,21 @@ class EfenuaUserListView(EfenuaListView):
 class EfenuaUserForm(Efenuaforms):
     class Meta:
         model = User
-        fieldsets = [('main', {'fields': ['username', 'first_name'],
-                               'legend': ''}),
-                     ]
-   
+        fields = '__all__'
+
+@method_decorator(permission_required('change_user'), name='dispatch')
+@method_decorator(login_required, name='dispatch')
 class EfenuaUserUpdateView(EfenuaUpdateView):
     model = User
-    
+    form_class = EfenuaUserForm
+
+@method_decorator(login_required, name='dispatch')
 class EfenuaUserDetailView(EfenuaDetailView):
     model = User
     fields = ('username',)
     
+@method_decorator(permission_required('add_user'), name='dispatch')    
+@method_decorator(login_required, name='dispatch')
 class EfenuaUserCreateView(EfenuaCreateView):
     model = User
     form_class = EfenuaUserForm
@@ -191,6 +209,7 @@ class EfenuaGroupTable(tables.Table):
         fields = ("selectable", "name", "permissions", "actions")
         attrs = {"class": "table"}   
        
+@method_decorator(login_required, name='dispatch')
 class EfenuaGroupListView(EfenuaListView):
     queryset = Group.objects.all()
     table_class = EfenuaGroupTable
@@ -198,18 +217,28 @@ class EfenuaGroupListView(EfenuaListView):
     table_header = "Groupes"
     action_static = (EfenuaMenuItemLink('group-create', 'Creer', icon="plus", options="primary"),)
    
+class EfenuaGroupForm(Efenuaforms):
+    class Meta:
+        model = Group
+        fields = '__all__'
+        
+@method_decorator(permission_required('change_permission'), name='dispatch')
+@method_decorator(login_required, name='dispatch')
 class EfenuaGroupUpdateView(EfenuaUpdateView):
     model = Group
+    form_class = EfenuaGroupForm
     
+@method_decorator(login_required, name='dispatch')
 class EfenuaGroupDetailView(EfenuaDetailView):
     model = Group
     fields = ('name',)
-    
+
+@method_decorator(permission_required('add_group'), name='dispatch') 
+@method_decorator(login_required, name='dispatch')
 class EfenuaGroupCreateView(EfenuaCreateView):
     model = Group
-    fields = ('username',)
+    form_class = EfenuaGroupForm
     
-# Permissions
 class EfenuaPermissionFilter(django_filters.FilterSet):
     name = django_filters.CharFilter(lookup_type='icontains')
     class Meta:
@@ -224,6 +253,7 @@ class EfenuaPermissionTable(tables.Table):
         fields = ("selectable", "name", "codename", "actions")
         attrs = {"class": "table"}   
        
+@method_decorator(login_required, name='dispatch')
 class EfenuaPermissionListView(EfenuaListView):
     queryset = Permission.objects.all()
     breadcrumbs = (EfenuaMenuItemBreadcrumbs('permission-list', 'Liste des permissions'),)
@@ -231,19 +261,30 @@ class EfenuaPermissionListView(EfenuaListView):
     filter_class = EfenuaPermissionFilter
     table_header = "Permission"
     action_static = (EfenuaMenuItemLink('permission-create', 'Creer', icon="plus", options="primary"),)
-   
+    
+class EfenuaPermissionForm(Efenuaforms):
+    class Meta:
+        model = Permission
+        fields = '__all__'
+
+@method_decorator(permission_required('change_permission'), name='dispatch')
+@method_decorator(login_required, name='dispatch')
 class EfenuaPermissionUpdateView(EfenuaUpdateView):
     model = Permission
+    form_class = EfenuaPermissionForm
     breadcrumbs = (EfenuaMenuItemBreadcrumbs('permission-list', 'Liste des permissions'),)
     
+@method_decorator(login_required, name='dispatch')
 class EfenuaPermissionDetailView(EfenuaDetailView):
     model = Permission
     fields = ('name',)
     breadcrumbs = (EfenuaMenuItemBreadcrumbs('permission-list', 'Liste des permissions'),
                    EfenuaMenuItemBreadcrumbs('permission-detail', 'Detail de la permission'))
-    
+
+@method_decorator(permission_required('add_permission'), name='dispatch')
+@method_decorator(login_required, name='dispatch')
 class EfenuaPermissionCreateView(EfenuaCreateView):
     model = Permission
-    fields = ('name',)
+    form_class = EfenuaPermissionForm
     breadcrumbs = (EfenuaMenuItemBreadcrumbs('permission-list', 'Liste des permissions'),
                    EfenuaMenuItemBreadcrumbs('permission-create', 'Creer une permission'))

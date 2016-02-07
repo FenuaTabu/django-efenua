@@ -18,6 +18,7 @@
         {{ form.media }}
     </head>
     <body>
+    {% if user.is_authenticated %}
     <nav class="navbar">
       {% block navbar %}
       <div class="container-fluid">
@@ -50,7 +51,8 @@
       </div>
       {% endblock %}
     </nav>
-        
+    {% endif %}
+    
      <div class="container-fluid">
 	
       <div class="row">

@@ -22,7 +22,7 @@
             </div>
             <div class="panel-body">
 				
-				<form action="" method="post">
+				<form action="" method="post" enctype="multipart/form-data">
 				    {% csrf_token %}
                     {% if form.non_field_errors %}{{ form.non_field_errors }}{% endif %}
                     {% for fieldset in form.fieldsets %}
@@ -47,12 +47,25 @@
                       </div>
                       </fieldset>
                     {% endfor %}
-                    
-                    <div class="row">
-                        <div class="col-sm-12">
-                            {% block btn %}{% endblock %}
-                        </div>
-                    </div>
+				{% if formset %}
+				{{ formset.management_form }}
+				  <legend>--</legend>
+				  <div class="books">
+				  {% for form in formset %}
+					<div class="row">
+						<div class="col-sm-12">
+							{% bootstrap_form form %}
+						</div>
+					</div>
+				  {% endfor %}
+				 
+				{% endif %}
+				
+				<div class="row">
+					<div class="col-sm-12">
+						{% block btn %}{% endblock %}
+					</div>
+				</div>
 				</form>
 			</div>
 		</div>
