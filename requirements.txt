@@ -1,3 +1,13 @@
-django-tables2==1.1.1
-django-filter==0.12.0
+Django==1.9.2
+django-appconf==1.0.1
 django-bootstrap3==6.2.2
+django-filter==0.12.0
+django-form-utils==1.0.3
+Django-Select2==5.7.1
+django-simple-history==1.7.0
+django-simple-menu==1.1.2
+django-tables2==1.1.1
+freeze==1.0.9
+python-dateutil==2.4.2
+six==1.10.0
+wheel==0.26.0
