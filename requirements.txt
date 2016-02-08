@@ -7,6 +7,7 @@ Django-Select2==5.7.1
 django-simple-history==1.7.0
 django-simple-menu==1.1.2
 django-tables2==1.1.1
+django-bootstrap3-datetimepicker==2.2.3
 freeze==1.0.9
 python-dateutil==2.4.2
 six==1.10.0

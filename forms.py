@@ -4,9 +4,25 @@ from django import forms
 from django.forms.utils import flatatt
 from django.utils.safestring import mark_safe
 from form_utils.forms import BetterModelForm
+from django.contrib.auth.models import User, Group, Permission
 
 class Efenuaforms(BetterModelForm):
     pass
+
+class EfenuaUserForm(Efenuaforms):
+    class Meta:
+        model = User
+        fields = '__all__'
+        
+class EfenuaGroupForm(Efenuaforms):
+    class Meta:
+        model = Group
+        fields = '__all__'
+        
+class EfenuaPermissionForm(Efenuaforms):
+    class Meta:
+        model = Permission
+        fields = '__all__'
 
 class Fieldset(object):
     """

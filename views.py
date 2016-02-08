@@ -9,21 +9,10 @@ from django.shortcuts import redirect
 from django.conf import settings
 from django_tables2 import RequestConfig
 from efenua.utils import EfenuaMenuItemLink, EfenuaMenuItemBreadcrumbs
-import django_tables2 as tables
 import django_filters
 from django.contrib.auth.models import User, Group, Permission
-
-from efenua.widgets import DateTimePicker
-from django_select2.forms import Select2MultipleWidget, Select2Widget
-from django import forms
-from efenua.form import Efenuaforms
-
-forms.DateField.widget = DateTimePicker(options={"format": "YYYY-MM-DD","pickTime": False})
-forms.ChoiceField.widget = Select2Widget()
-forms.ModelMultipleChoiceField.widget = Select2MultipleWidget()
-
-class EfenuaTable(tables.Table):
-    pass
+from efenua.forms import EfenuaUserForm, EfenuaGroupForm, EfenuaPermissionForm
+from efenua.tables import EfenuaTable, EfenuaUserTable, EfenuaGroupTable, EfenuaPermissionTable
   
 class EfenuaDashboardView(TemplateView):
     template_name = 'efenua/dashboard.html'
@@ -156,15 +145,7 @@ class EfenuaListView(TemplateView):
 class EfenuaUserFilter(django_filters.FilterSet):
     class Meta:
         model = User
-        fields = ['username', 'last_name']
-
-class EfenuaUserTable(tables.Table):
-    selectable = tables.CheckBoxColumn(accessor='pk')
-    actions = tables.TemplateColumn('<a href="{% url \'user-detail\' record.pk %}"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></a> <a href="{% url \'user-update\' record.pk %}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>', verbose_name=" ")
-    class Meta:
-        model = User
-        fields = ("selectable", "username", "email", "actions")
-        attrs = {"class": "table"}   
+        fields = ['username', 'last_name']  
        
 @method_decorator(login_required, name='dispatch')
 class EfenuaUserListView(EfenuaListView):
@@ -173,11 +154,6 @@ class EfenuaUserListView(EfenuaListView):
     filter_class = EfenuaUserFilter
     table_header = "Utilisateurs"
     action_static = (EfenuaMenuItemLink('user-create', 'Creer', icon="plus", options="primary"),)
-    
-class EfenuaUserForm(Efenuaforms):
-    class Meta:
-        model = User
-        fields = '__all__'
 
 @method_decorator(permission_required('change_user'), name='dispatch')
 @method_decorator(login_required, name='dispatch')
@@ -199,15 +175,7 @@ class EfenuaUserCreateView(EfenuaCreateView):
 class EfenuaGroupFilter(django_filters.FilterSet):
     class Meta:
         model = Group
-        fields = ['name', 'permissions']
-
-class EfenuaGroupTable(tables.Table):
-    selectable = tables.CheckBoxColumn(accessor='pk')
-    actions = tables.TemplateColumn('<a href="{% url \'group-detail\' record.pk %}"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></a> <a href="{% url \'group-update\' record.pk %}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>', verbose_name=" ")
-    class Meta:
-        model = Group
-        fields = ("selectable", "name", "permissions", "actions")
-        attrs = {"class": "table"}   
+        fields = ['name', 'permissions'] 
        
 @method_decorator(login_required, name='dispatch')
 class EfenuaGroupListView(EfenuaListView):
@@ -216,11 +184,6 @@ class EfenuaGroupListView(EfenuaListView):
     filter_class = EfenuaGroupFilter
     table_header = "Groupes"
     action_static = (EfenuaMenuItemLink('group-create', 'Creer', icon="plus", options="primary"),)
-   
-class EfenuaGroupForm(Efenuaforms):
-    class Meta:
-        model = Group
-        fields = '__all__'
         
 @method_decorator(permission_required('change_permission'), name='dispatch')
 @method_decorator(login_required, name='dispatch')
@@ -244,14 +207,6 @@ class EfenuaPermissionFilter(django_filters.FilterSet):
     class Meta:
         model = Permission
         fields = ['name', 'codename']
-
-class EfenuaPermissionTable(tables.Table):
-    selectable = tables.CheckBoxColumn(accessor='pk')
-    actions = tables.TemplateColumn('<a href="{% url \'permission-detail\' record.pk %}"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></a> <a href="{% url \'permission-update\' record.pk %}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>', verbose_name=" ")
-    class Meta:
-        model = Permission
-        fields = ("selectable", "name", "codename", "actions")
-        attrs = {"class": "table"}   
        
 @method_decorator(login_required, name='dispatch')
 class EfenuaPermissionListView(EfenuaListView):
@@ -261,11 +216,6 @@ class EfenuaPermissionListView(EfenuaListView):
     filter_class = EfenuaPermissionFilter
     table_header = "Permission"
     action_static = (EfenuaMenuItemLink('permission-create', 'Creer', icon="plus", options="primary"),)
-    
-class EfenuaPermissionForm(Efenuaforms):
-    class Meta:
-        model = Permission
-        fields = '__all__'
 
 @method_decorator(permission_required('change_permission'), name='dispatch')
 @method_decorator(login_required, name='dispatch')
