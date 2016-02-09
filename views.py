@@ -1,4 +1,4 @@
-# from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic import TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -20,8 +20,7 @@ class EfenuaDashboardView(TemplateView):
     def post(self, request, *args, **kwargs):
         return self.get(request, *args, **kwargs)
         
-# class CreateView(SuccessMessageMixin, CreateView):
-class EfenuaCreateView(CreateView):
+class EfenuaCreateView(SuccessMessageMixin, CreateView):
     template_name = 'efenua/createview.html'
     success_message = "%(msg)s a ete creer avec succes"
     action_static = None
@@ -45,8 +44,7 @@ class EfenuaCreateView(CreateView):
                 context['formset'] = self.formset_class()
         return context
             
-# class UpdateView(SuccessMessageMixin, UpdateView):
-class EfenuaUpdateView(UpdateView):
+class EfenuaUpdateView(SuccessMessageMixin, UpdateView):
     template_name = 'efenua/updateview.html'
     success_message = "%(msg)s a ete mise a jour avec succes"
     action_static = None
@@ -145,7 +143,7 @@ class EfenuaListView(TemplateView):
 class EfenuaUserFilter(django_filters.FilterSet):
     class Meta:
         model = User
-        fields = ['username', 'last_name']  
+        fields = ['username', 'last_name', 'first_name', 'is_active']  
        
 @method_decorator(login_required, name='dispatch')
 class EfenuaUserListView(EfenuaListView):
@@ -154,24 +152,30 @@ class EfenuaUserListView(EfenuaListView):
     filter_class = EfenuaUserFilter
     table_header = "Utilisateurs"
     action_static = (EfenuaMenuItemLink('user-create', 'Creer', icon="plus", options="primary"),)
+    breadcrumbs = (EfenuaMenuItemBreadcrumbs('user-list', 'Liste des utilisateurs'),)
 
 @method_decorator(permission_required('change_user'), name='dispatch')
 @method_decorator(login_required, name='dispatch')
 class EfenuaUserUpdateView(EfenuaUpdateView):
     model = User
     form_class = EfenuaUserForm
+    breadcrumbs = (EfenuaMenuItemBreadcrumbs('user-list', 'Liste des utilisateurs'),)
 
 @method_decorator(login_required, name='dispatch')
 class EfenuaUserDetailView(EfenuaDetailView):
     model = User
     fields = ('username',)
+    breadcrumbs = (EfenuaMenuItemBreadcrumbs('user-list', 'Liste des utilisateurs'),
+                   EfenuaMenuItemBreadcrumbs('user-detail', 'Detail de l utilisateur'))
     
 @method_decorator(permission_required('add_user'), name='dispatch')    
 @method_decorator(login_required, name='dispatch')
 class EfenuaUserCreateView(EfenuaCreateView):
     model = User
     form_class = EfenuaUserForm
-    
+    breadcrumbs = (EfenuaMenuItemBreadcrumbs('user-list', 'Liste des utilisateurs'),
+                   EfenuaMenuItemBreadcrumbs('user-create', 'Creer un utilisateur'))
+        
 class EfenuaGroupFilter(django_filters.FilterSet):
     class Meta:
         model = Group
@@ -184,23 +188,29 @@ class EfenuaGroupListView(EfenuaListView):
     filter_class = EfenuaGroupFilter
     table_header = "Groupes"
     action_static = (EfenuaMenuItemLink('group-create', 'Creer', icon="plus", options="primary"),)
+    breadcrumbs = (EfenuaMenuItemBreadcrumbs('group-list', 'Liste des groupes'),)
         
 @method_decorator(permission_required('change_permission'), name='dispatch')
 @method_decorator(login_required, name='dispatch')
 class EfenuaGroupUpdateView(EfenuaUpdateView):
     model = Group
     form_class = EfenuaGroupForm
+    breadcrumbs = (EfenuaMenuItemBreadcrumbs('group-list', 'Liste des groupes'),)
     
 @method_decorator(login_required, name='dispatch')
 class EfenuaGroupDetailView(EfenuaDetailView):
     model = Group
     fields = ('name',)
+    breadcrumbs = (EfenuaMenuItemBreadcrumbs('group-list', 'Liste des groupes'),
+                   EfenuaMenuItemBreadcrumbs('group-detail', 'Detail du groupe'))
 
 @method_decorator(permission_required('add_group'), name='dispatch') 
 @method_decorator(login_required, name='dispatch')
 class EfenuaGroupCreateView(EfenuaCreateView):
     model = Group
     form_class = EfenuaGroupForm
+    breadcrumbs = (EfenuaMenuItemBreadcrumbs('group-list', 'Liste des groupes'),
+                   EfenuaMenuItemBreadcrumbs('group-create', 'Creer un groupe'))
     
 class EfenuaPermissionFilter(django_filters.FilterSet):
     name = django_filters.CharFilter(lookup_type='icontains')
@@ -215,14 +225,6 @@ class EfenuaPermissionListView(EfenuaListView):
     table_class = EfenuaPermissionTable
     filter_class = EfenuaPermissionFilter
     table_header = "Permission"
-    action_static = (EfenuaMenuItemLink('permission-create', 'Creer', icon="plus", options="primary"),)
-
-@method_decorator(permission_required('change_permission'), name='dispatch')
-@method_decorator(login_required, name='dispatch')
-class EfenuaPermissionUpdateView(EfenuaUpdateView):
-    model = Permission
-    form_class = EfenuaPermissionForm
-    breadcrumbs = (EfenuaMenuItemBreadcrumbs('permission-list', 'Liste des permissions'),)
     
 @method_decorator(login_required, name='dispatch')
 class EfenuaPermissionDetailView(EfenuaDetailView):
@@ -231,10 +233,4 @@ class EfenuaPermissionDetailView(EfenuaDetailView):
     breadcrumbs = (EfenuaMenuItemBreadcrumbs('permission-list', 'Liste des permissions'),
                    EfenuaMenuItemBreadcrumbs('permission-detail', 'Detail de la permission'))
 
-@method_decorator(permission_required('add_permission'), name='dispatch')
-@method_decorator(login_required, name='dispatch')
-class EfenuaPermissionCreateView(EfenuaCreateView):
-    model = Permission
-    form_class = EfenuaPermissionForm
-    breadcrumbs = (EfenuaMenuItemBreadcrumbs('permission-list', 'Liste des permissions'),
-                   EfenuaMenuItemBreadcrumbs('permission-create', 'Creer une permission'))
+ 

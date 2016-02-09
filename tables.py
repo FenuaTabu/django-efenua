@@ -17,12 +17,12 @@ class EfenuaGroupTable(tables.Table):
     actions = tables.TemplateColumn('<a href="{% url \'group-detail\' record.pk %}"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></a> <a href="{% url \'group-update\' record.pk %}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>', verbose_name=" ")
     class Meta:
         model = Group
-        fields = ("selectable", "name", "permissions", "actions")
+        fields = ("selectable", "name", "actions")
         attrs = {"class": "table"}
         
 class EfenuaPermissionTable(tables.Table):
     selectable = tables.CheckBoxColumn(accessor='pk')
-    actions = tables.TemplateColumn('<a href="{% url \'permission-detail\' record.pk %}"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></a> <a href="{% url \'permission-update\' record.pk %}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>', verbose_name=" ")
+    actions = tables.TemplateColumn('<a href="{% url \'permission-detail\' record.pk %}"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></a>', verbose_name=" ")
     class Meta:
         model = Permission
         fields = ("selectable", "name", "codename", "actions")

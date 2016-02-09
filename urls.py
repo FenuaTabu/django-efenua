@@ -113,9 +113,7 @@ urlpatterns = [
     URLGenerator( Group ).get_update_url(v.EfenuaGroupUpdateView),
     #permissions
     URLGenerator( Permission ).get_list_url(v.EfenuaPermissionListView),
-    URLGenerator( Permission ).get_create_url(v.EfenuaPermissionCreateView),
     URLGenerator( Permission ).get_detail_url(v.EfenuaPermissionDetailView),
-    URLGenerator( Permission ).get_update_url(v.EfenuaPermissionUpdateView),
     
     url('^dashboard', v.EfenuaDashboardView.as_view(), name="dashboard")
 ]
