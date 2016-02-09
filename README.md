@@ -1,6 +1,10 @@
 # django-efenua
 django-efenua simplifie la création d'application.
-Le package utilise les vue basé sur les classes de django
+Le package utilise les vues fondées sur les classes de django
+
+# Requis
+- Python 2.7, 3.4, 3.5
+- django 1.9
 
 # Configuration
 - Ajouter dans votre `settings.py`
@@ -30,7 +34,7 @@ url(r'^', include('efenua.urls'))
 from efenua import efenuaListView
 import django_tables2 as tables
 import django_filters
-from app.models import Foo
+from bar.models import Foo
   
 class FooFilter(django_filters.FilterSet):
     class Meta:
@@ -77,7 +81,7 @@ class FooForm(Efenuaforms):
 ```python
 # views.py
 from efenua.views import EfenuaCreateView
-from app.forms import FooForm
+from bar.forms import FooForm
 
 class FooCreateView(EfenuaCreateView):
     model = Foo
@@ -112,7 +116,7 @@ class FooForm(Efenuaforms):
 ```python
 # views.py
 from efenua.views import EfenuaUpdateView
-from app.forms import FooForm
+from bar.forms import FooForm
 
 class FooUpdateView(EfenuaUpdateView):
     model = Foo
@@ -131,3 +135,7 @@ urlpatterns = [
   ...
 ]
 ```
+
+# Packages requis
+- [django-tables2](https://django-tables2.readthedocs.org/en/latest/)
+- [django-filter](https://django-filter.readthedocs.org/en/latest/)
