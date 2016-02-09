@@ -3,14 +3,17 @@ django-efenua simplifie la création d'application.
 Le package utilise les vue basé sur les classes de django
 
 # Configuration
-- Ajouter`efenua` dans votre `INSTALLED_APPS`
+- Ajouter dans votre `settings.py`
 
 ```python
+#settings.py
 INSTALLED_APPS = [
     ...
     'efenua',
     ...
 ]
+
+LOGIN_REDIRECT_URL = "dashboard
 ```
 
 - Ajouter dans votre fichier `url.py`
