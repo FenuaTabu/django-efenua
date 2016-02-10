@@ -70,32 +70,18 @@ class EfenuaUpdateView(SuccessMessageMixin, UpdateView):
         
 class EfenuaDeleteView(DeleteView):
     template_name = 'efenua/deleteview.html'
-    
-# class EfenuaDetailView(UpdateView):
-#     template_name = 'efenua/detailview.html'
-#     success_message = "%(msg)s a ete mise a jour avec succes"
-#     action_static = None
-#     breadcrumbs = None
-# 
-#     def get_success_message(self, cleaned_data):
-#         return self.success_message % dict(
-#             cleaned_data,
-#             msg=self.object,
-#         )
-#     
-#     def get_context_data(self, **kwargs):
-#         context = super(EfenuaDetailView, self).get_context_data(**kwargs)
-#         if self.action_static is not None: context['action_static'] = self.action_static
-#         context['breadcrumbs'] = self.breadcrumbs
-#         return context
-    
+
 class EfenuaDetailView(DetailView):
     template_name = 'efenua/detailview.html'
     fields = None
+    action_static = None
+    breadcrumbs = None
      
     def get_context_data(self, **kwargs):
         context = super(DetailView, self).get_context_data(**kwargs)
+        if self.action_static is not None: context['action_static'] = self.action_static
         context['fields'] = self.fields
+        context['breadcrumbs'] = self.breadcrumbs
         return context
         
 class EfenuaListView(TemplateView):
