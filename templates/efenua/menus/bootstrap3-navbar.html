@@ -1,6 +1,5 @@
 {% load bootstrap3 %}
 
-<ul class="nav">
 {% for item in menu %}
     {% if item.visible %}
         {% if item.separator %}
@@ -17,9 +16,8 @@
                 {% endif %}
             </a>
             {% if item.children %}
-                {% include 'menu/bootstrap3-navbar-submenu.html' with items=item.children %}
+                {% include 'efenua/menus/bootstrap3-navbar-submenu.html' with items=item.children %}
             {% endif %}
         </li>
     {% endif %}
 {% endfor %}
-</ul>

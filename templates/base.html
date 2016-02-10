@@ -34,16 +34,16 @@
         <div id="navbar" class="navbar-collapse collapse">
           {% block navbar_right %}
 			<ul class="nav navbar-nav navbar-right">
-				{% include "menu/bootstrap3-navbar.html" with menu=menus.navbar %}
+				{% include "efenua/menus/bootstrap3-navbar.html" with menu=menus.navbar %}
 				{% if menus.settings %}
 				<li>
 					<a class="dropdown-toggle" data-toggle="dropdown" href="#">{% bootstrap_icon "cog" %}<span class="caret"></span></a>
-					{% include "menu/bootstrap3-navbar-submenu.html" with items=menus.settings %}
+					{% include "efenua/menus/bootstrap3-navbar-submenu.html" with items=menus.settings %}
 				</li>
 				{% endif %}
 				<li>
 					<a class="dropdown-toggle" data-toggle="dropdown" href="#"> {% bootstrap_icon "user" %} <span class="caret"></span></a>
-					{% include "menu/bootstrap3-navbar-submenu.html" with items=menus.user %}
+					{% include "efenua/menus/bootstrap3-navbar-submenu.html" with items=menus.user %}
 				</li>
 			</ul>
           {% endblock %}
@@ -57,7 +57,7 @@
 	
       <div class="row">
         <div class="col-sm-3 col-md-2">
-			{% include "menu/bootstrap3-sidebar.html" with menu=menus.main %}
+			{% include "efenua/menus/bootstrap3-sidebar.html" with menu=menus.main %}
         </div>
         <div class="col-sm-9 col-md-10">
         	{% if breadcrumbs %}

@@ -11,7 +11,7 @@ from django_tables2 import RequestConfig
 from efenua.utils import EfenuaMenuItemLink, EfenuaMenuItemBreadcrumbs
 import django_filters
 from django.contrib.auth.models import User, Group, Permission
-from efenua.forms import EfenuaUserForm, EfenuaGroupForm, EfenuaPermissionForm
+from efenua.forms import EfenuaUserForm, EfenuaGroupForm
 from efenua.tables import EfenuaTable, EfenuaUserTable, EfenuaGroupTable, EfenuaPermissionTable
   
 class EfenuaDashboardView(TemplateView):

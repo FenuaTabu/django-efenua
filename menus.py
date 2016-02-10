@@ -1,4 +1,4 @@
-from efenua.menu import Menu, MenuItem
+from menu import Menu, MenuItem
 from django.core.urlresolvers import reverse
 
 Menu.add_item("user", MenuItem("Deconnexion",
