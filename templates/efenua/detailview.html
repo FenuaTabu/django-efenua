@@ -19,19 +19,15 @@
 				</div>
 			</div>
 
-			<table>
-				{% for field in form %}
-					<tr>
-						<td>{{ field.label }}</td>
-						{% if field.value|get_type == 'list' %}
-							{% for field2 in field.value %}
-								{{ field2 }}
-							{% endfor %}
-						{% endif %}
-						<td>{{ field.value }}</td>
-					</tr>
-				{% endfor %}
+			<table class="table">
+			{% for field in fields %}
+				<tr>
+					<td>{{ object|get_verbose_field_name:field }}</td>
+					<td>{{ object|get_attribute:field }}</td>
+				</tr>
+			{% endfor %}
 			</table>
+            
 		</div>
 	</div>
 </div>
