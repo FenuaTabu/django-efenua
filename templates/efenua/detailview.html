@@ -20,10 +20,9 @@
 			</div>
 
 			<table class="table">
-			{% for field in fields %}
+			{% for field in object %}
 				<tr>
-					<td>{{ object|get_verbose_field_name:field }}</td>
-					<td>{{ object|get_attribute:field }}</td>
+					<td>{{ field }}</td>
 				</tr>
 			{% endfor %}
 			</table>
