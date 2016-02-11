@@ -1,6 +1,13 @@
 from menu import Menu, MenuItem
 from django.core.urlresolvers import reverse
 
+Menu.add_item("user", MenuItem("Changer mot de passe",
+   reverse("password-change"),
+   weight=99,
+   icon="lock",
+   check=lambda request: request.user.is_authenticated),
+)
+
 Menu.add_item("user", MenuItem("Deconnexion",
    reverse("logout"),
    weight=100,
