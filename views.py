@@ -76,9 +76,20 @@ class EfenuaDetailView(DetailView):
     fields = None
     action_static = None
     breadcrumbs = None
+    
+    # def get_object(self, queryset=None, **kwargs):
+        # object = super(EfenuaDetailView, self).get_object(**kwargs)
+        # print kwargs
+        # return object 
+    
+    # def get_queryset(self, **kwargs):
+        # queryset = super(EfenuaDetailView, self).get_queryset(**kwargs)
+        # print(queryset.filter(pk=2).values('label'))
+        # print kwargs
+        # return queryset
      
     def get_context_data(self, **kwargs):
-        context = super(DetailView, self).get_context_data(**kwargs)
+        context = super(EfenuaDetailView, self).get_context_data(**kwargs)
         if self.action_static is not None: context['action_static'] = self.action_static
         context['fields'] = self.fields
         context['breadcrumbs'] = self.breadcrumbs
