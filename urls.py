@@ -101,6 +101,8 @@ from django.contrib.auth import views as auth_views
 urlpatterns = [
     url(r'^login/$', auth_views.login, name='login'),
     url(r'^logout/$', auth_views.logout, {'next_page': '/login/'}, name='logout'),
+    url(r'^password_change/$', auth_views.password_change, {'post_change_redirect': 'dashboard'}, name='password-change' ),
+    
     #Users
     URLGenerator( User ).get_list_url(v.EfenuaUserListView),
     URLGenerator( User ).get_create_url(v.EfenuaUserCreateView),
