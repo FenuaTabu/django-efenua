@@ -20,9 +20,9 @@
 			</div>
 
 			<table class="table">
-			{% for field in object %}
+			{% for field in fields %}
 				<tr>
-					<td>{{ field }}</td>
+					<td>{{ object|get_attribute:field }}</td>
 				</tr>
 			{% endfor %}
 			</table>
