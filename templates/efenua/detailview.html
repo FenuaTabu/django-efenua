@@ -22,6 +22,7 @@
 			<table class="table">
 			{% for field in fields %}
 				<tr>
+					<td>{{ object|get_verbose_field_name:field }}</td>
 					<td>{{ object|get_attribute:field }}</td>
 				</tr>
 			{% endfor %}
