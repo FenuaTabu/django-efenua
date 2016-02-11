@@ -102,6 +102,8 @@ urlpatterns = [
     url(r'^login/$', auth_views.login, name='login'),
     url(r'^logout/$', auth_views.logout, {'next_page': '/login/'}, name='logout'),
     url(r'^password_change/$', auth_views.password_change, {'post_change_redirect': 'dashboard'}, name='password-change' ),
+    url(r'^password_reset/$', auth_views.password_reset, name='password-reset' ),
+    url(r'^password_reset_done/$', auth_views.password_reset_done, name='password_reset_done' ),
     
     #Users
     URLGenerator( User ).get_list_url(v.EfenuaUserListView),

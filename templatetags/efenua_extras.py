@@ -16,7 +16,7 @@ def isinst(value, class_str):
 @register.filter(name="get_type")
 def get_type(ob):
     return ob.__class__.__name__
-
+    
 @register.filter(name="get_attribute")
 def get_attribute(value, arg):
     """Gets an attribute of an object dynamically AND recursively from a string name"""
@@ -40,4 +40,7 @@ def get_verbose_field_name(instance, field_name):
     """
     Returns verbose_name for a field.
     """
+    if "." in str(field_name):
+        firstarg = str(field_name).split(".")[0]
+        return instance._meta.get_field(firstarg).verbose_name.title()
     return instance._meta.get_field(field_name).verbose_name.title()

@@ -161,9 +161,8 @@ class EfenuaUserUpdateView(EfenuaUpdateView):
 @method_decorator(login_required, name='dispatch')
 class EfenuaUserDetailView(EfenuaDetailView):
     model = User
-    fields = ('username',)
-    breadcrumbs = (EfenuaMenuItemBreadcrumbs('user-list', 'Liste des utilisateurs'),
-                   EfenuaMenuItemBreadcrumbs('user-detail', 'Detail de l utilisateur'))
+    fields = ('username', 'last_name', 'first_name', 'email', 'is_active', 'is_superuser', 'last_login', 'date_joined')
+    breadcrumbs = (EfenuaMenuItemBreadcrumbs('user-list', 'Liste des utilisateurs'),)
     
 @method_decorator(permission_required('add_user'), name='dispatch')    
 @method_decorator(login_required, name='dispatch')
@@ -198,8 +197,7 @@ class EfenuaGroupUpdateView(EfenuaUpdateView):
 class EfenuaGroupDetailView(EfenuaDetailView):
     model = Group
     fields = ('name',)
-    breadcrumbs = (EfenuaMenuItemBreadcrumbs('group-list', 'Liste des groupes'),
-                   EfenuaMenuItemBreadcrumbs('group-detail', 'Detail du groupe'))
+    breadcrumbs = (EfenuaMenuItemBreadcrumbs('group-list', 'Liste des groupes'),)
 
 @method_decorator(permission_required('add_group'), name='dispatch') 
 @method_decorator(login_required, name='dispatch')
@@ -227,7 +225,6 @@ class EfenuaPermissionListView(EfenuaListView):
 class EfenuaPermissionDetailView(EfenuaDetailView):
     model = Permission
     fields = ('name',)
-    breadcrumbs = (EfenuaMenuItemBreadcrumbs('permission-list', 'Liste des permissions'),
-                   EfenuaMenuItemBreadcrumbs('permission-detail', 'Detail de la permission'))
+    breadcrumbs = (EfenuaMenuItemBreadcrumbs('permission-list', 'Liste des permissions'),)
 
  

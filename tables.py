@@ -21,9 +21,8 @@ class EfenuaGroupTable(tables.Table):
         attrs = {"class": "table"}
         
 class EfenuaPermissionTable(tables.Table):
-    selectable = tables.CheckBoxColumn(accessor='pk')
     actions = tables.TemplateColumn('<a href="{% url \'permission-detail\' record.pk %}"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></a>', verbose_name=" ")
     class Meta:
         model = Permission
-        fields = ("selectable", "name", "codename", "actions")
+        fields = ("name", "codename", "actions")
         attrs = {"class": "table"}   

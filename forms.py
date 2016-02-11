@@ -13,10 +13,10 @@ class Efenuaforms(BetterModelForm):
 class EfenuaUserForm(Efenuaforms):
     class Meta:
         model = User
-        fields = '__all__'
-#         fieldsets = [('main', {'fields': ['username', 'password', 'last_name', 'first_name', 'email'], 'legend': ''}),
-#                      ('Acces', {'fields': ['groups', 'user_permissions'],}),
-#                      ('Autres', {'fields': ['is_staff', 'is_active', 'is_superuser'],})]
+#         fields = '__all__'
+        fieldsets = [('main', {'fields': ['username', 'last_name', 'first_name', 'email'], 'legend': ''}),
+                     ('Acces', {'fields': ['groups', 'user_permissions'],}),
+                     ('Autres', {'fields': ['is_active'],})]
         widgets = {
             'groups': Select2MultipleWidget,
             'user_permissions': Select2MultipleWidget
