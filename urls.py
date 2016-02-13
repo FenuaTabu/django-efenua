@@ -105,6 +105,7 @@ urlpatterns = [
     url(r'^password_reset/$', auth_views.password_reset, name='password-reset' ),
     url(r'^password_reset_done/$', auth_views.password_reset_done, name='password_reset_done' ),
     
+    
     #Users
     URLGenerator( User ).get_list_url(v.EfenuaUserListView),
     URLGenerator( User ).get_create_url(v.EfenuaUserCreateView),

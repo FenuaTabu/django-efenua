@@ -37,6 +37,12 @@
                                         </div>
                                     {% endfor %}
                                     </div>
+                                    
+                                    <div class="btn-group pull-right" role="group">
+	                                    {% if action_export_csv %}
+									    	<button type="submit" class="btn btn-default" title="{{ action_export_csv.label }}" name="action" value="{{ action_export_csv.url }}">{% if action_export_csv.icon %} <span class="glyphicon glyphicon-{{ action_export_csv.icon }}" aria-hidden="true"></span> {% endif %}</button>
+										{% endif %}
+									</div>
                                 </div>
                             </div>
                             {% render_table table %}

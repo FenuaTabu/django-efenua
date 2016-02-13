@@ -8,7 +8,7 @@ from django.contrib import messages
 from django.shortcuts import redirect
 from django.conf import settings
 from django_tables2 import RequestConfig
-from efenua.utils import EfenuaMenuItemLink, EfenuaMenuItemBreadcrumbs
+from efenua.utils import EfenuaMenuItemLink, EfenuaMenuItemBreadcrumbs, EfenuaMenuItemSubmit, EfenuaMenu
 import django_filters
 from django.contrib.auth.models import User, Group, Permission
 from efenua.forms import EfenuaUserForm, EfenuaGroupForm
@@ -105,11 +105,17 @@ class EfenuaListView(TemplateView):
     action_one = None
     model = None
     breadcrumbs = None
+    queryset_csv = None
     
     def post(self, request, *args, **kwargs):
         self.selectable = self.request.POST.getlist("selectable", None)
         get_action = self.request.POST.get("action", None)
         if get_action is not None:
+            if get_action == "export_csv":
+                from djqscsv import render_to_csv_response
+                if self.queryset_csv is None:
+                    self.queryset_csv = self.queryset
+                return render_to_csv_response(self.queryset_csv)
             if get_action in vars(self.__class__) or get_action in vars(EfenuaListView):
                 f = getattr(self, get_action)
                 f(self.queryset.filter(pk__in=self.selectable))
@@ -128,6 +134,8 @@ class EfenuaListView(TemplateView):
         data['breadcrumbs'] = self.breadcrumbs
         data['action_many'] = self.action_many
         data['action_one'] = self.action_one
+        if self.queryset_csv is not None:
+            data['action_export_csv'] = EfenuaMenuItemSubmit('export_csv', 'Export', icon='export')
         if self.action_static is not None: data['action_static'] = self.action_static
         return data
         
@@ -220,6 +228,7 @@ class EfenuaPermissionListView(EfenuaListView):
     table_class = EfenuaPermissionTable
     filter_class = EfenuaPermissionFilter
     table_header = "Permission"
+
     
 @method_decorator(login_required, name='dispatch')
 class EfenuaPermissionDetailView(EfenuaDetailView):
