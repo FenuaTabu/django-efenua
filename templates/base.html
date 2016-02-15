@@ -14,6 +14,7 @@
         <link rel="stylesheet" href="{% static "efenua/css/base.css" %}"/>
         <script src="{% static "efenua/js/jquery.min.js" %}"></script>
         <script src="{% static "efenua/js/bootstrap.min.js" %}"></script>
+        <script src="{% static "efenua/js/notify.min.js" %}"></script>
         {% block extrahead %}{% endblock %}
         {{ form.media }}
     </head>
@@ -67,12 +68,19 @@
 					{% endblock %}
 				</ol>
 			{% endif %}
-            {% bootstrap_messages %}
+            
             {% block content %}{% endblock %}
         </div>
       </div>
     </div>
     
     {% block extrafooter %}{% endblock %}
+    {% if messages %}
+    	<script type="text/javascript">
+	        {% for message in messages %}
+	        	$.notify("{{ message }}", {style: 'bootstrap', globalPosition: 'bottom right', className: "{{ message.tags }}"});
+	        {% endfor %}
+	    </script>
+    {% endif %}
     </body>
 </html>
