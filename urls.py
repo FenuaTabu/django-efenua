@@ -107,17 +107,18 @@ urlpatterns = [
     url(r'^password_reset_confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$', auth_views.password_reset_confirm, {'post_reset_redirect': 'logout' }, name='password_reset_confirm'),
     url(r'^password_reset_done/$', auth_views.password_reset_done, name='password_reset_done' ),
     
-    
     #Users
     URLGenerator( User ).get_list_url(v.EfenuaUserListView),
     URLGenerator( User ).get_create_url(v.EfenuaUserCreateView),
     URLGenerator( User ).get_detail_url(v.EfenuaUserDetailView),
     URLGenerator( User ).get_update_url(v.EfenuaUserUpdateView),
+    
     #Groupes
     URLGenerator( Group ).get_list_url(v.EfenuaGroupListView),
     URLGenerator( Group ).get_create_url(v.EfenuaGroupCreateView),
     URLGenerator( Group ).get_detail_url(v.EfenuaGroupDetailView),
     URLGenerator( Group ).get_update_url(v.EfenuaGroupUpdateView),
+    
     #permissions
     URLGenerator( Permission ).get_list_url(v.EfenuaPermissionListView),
     URLGenerator( Permission ).get_detail_url(v.EfenuaPermissionDetailView),

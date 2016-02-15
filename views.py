@@ -241,5 +241,3 @@ class EfenuaPermissionDetailView(EfenuaDetailView):
     model = Permission
     fields = ('name',)
     breadcrumbs = (EfenuaMenuItemBreadcrumbs('permission-list', 'Liste des permissions'),)
-
- 
