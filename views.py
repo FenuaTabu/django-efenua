@@ -144,12 +144,16 @@ class EfenuaListView(TemplateView):
         context.update(self.context())
         context['table_count'] = self.filter.qs.count()
         return context
-    
+
 class EfenuaUserFilter(django_filters.FilterSet):
+    username = django_filters.CharFilter(lookup_type='icontains')
+    last_name = django_filters.CharFilter(lookup_type='icontains')
+    first_name = django_filters.CharFilter(lookup_type='icontains')
+    email = django_filters.CharFilter(lookup_type='icontains')
     class Meta:
         model = User
-        fields = ['username', 'last_name', 'first_name', 'is_active']  
-       
+        fields = ['username', 'last_name', 'first_name', 'email', 'groups', 'user_permissions', 'is_active', 'is_staff' ]  
+    
 @method_decorator(login_required, name='dispatch')
 class EfenuaUserListView(EfenuaListView):
     queryset = User.objects.all()
@@ -181,6 +185,7 @@ class EfenuaUserCreateView(EfenuaCreateView):
                    EfenuaMenuItemBreadcrumbs('user-create', 'Creer un utilisateur'))
         
 class EfenuaGroupFilter(django_filters.FilterSet):
+    name = django_filters.CharFilter(lookup_type='icontains')
     class Meta:
         model = Group
         fields = ['name', 'permissions'] 
@@ -217,6 +222,7 @@ class EfenuaGroupCreateView(EfenuaCreateView):
     
 class EfenuaPermissionFilter(django_filters.FilterSet):
     name = django_filters.CharFilter(lookup_type='icontains')
+    codename = django_filters.CharFilter(lookup_type='icontains')
     class Meta:
         model = Permission
         fields = ['name', 'codename']

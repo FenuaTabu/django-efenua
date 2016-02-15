@@ -101,8 +101,10 @@ from django.contrib.auth import views as auth_views
 urlpatterns = [
     url(r'^login/$', auth_views.login, name='login'),
     url(r'^logout/$', auth_views.logout, {'next_page': '/login/'}, name='logout'),
-    url(r'^password_change/$', auth_views.password_change, {'post_change_redirect': 'dashboard'}, name='password-change' ),
+    url(r'^password_change/$', auth_views.password_change, name='password-change' ),
+    url(r'^password_change_done/$', auth_views.password_change_done, name='password_change_done' ),
     url(r'^password_reset/$', auth_views.password_reset, name='password-reset' ),
+    url(r'^password_reset_confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$', auth_views.password_reset_confirm, {'post_reset_redirect': 'logout' }, name='password_reset_confirm'),
     url(r'^password_reset_done/$', auth_views.password_reset_done, name='password_reset_done' ),
     
     

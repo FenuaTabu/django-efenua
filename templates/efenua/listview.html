@@ -59,7 +59,7 @@
 			    <div class="panel-body">
 			        <form action="" method="get">
 			            {% for field in filter.form %}
-			            	{% bootstrap_field field %}
+			            	{% bootstrap_field field show_help=False %}
 			            {% endfor %}
 			            <p class="text-right"><button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Filtrer</button></p>
 			        </form>
