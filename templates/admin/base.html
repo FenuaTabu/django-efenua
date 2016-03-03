@@ -9,6 +9,7 @@
 {% block extrahead %}{% endblock %}
 {% block blockbots %}<meta name="robots" content="NONE,NOARCHIVE" />{% endblock %}
 
+<script src="{% static "efenua/js/jquery.min.js" %}"></script>
 <link rel="stylesheet" type="text/css" href="{% static "efenua/css/semantic.min.css" %}">
 
 </head>
@@ -16,27 +17,31 @@
 
 <body class="{% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %}"
   data-admin-utc-offset="{% now "Z" %}">
-
-
-<div class="ui secondary pointing menu">
+  
+<div class="ui compact menu">
 	{% block branding %}{% endblock %}
-  
-    {% block userlinks %}
-      {% if site_url %}
-          <a href="{{ site_url }}" class="item">{% trans 'View site' %}</a>
-      {% endif %}
-      {% if user.is_active and user.is_staff %}
-          {% url 'django-admindocs-docroot' as docsroot %}
-          {% if docsroot %}
-              <a href="{{ docsroot }}" class="item">{% trans 'Documentation' %}</a>
+    
+      <div class="ui simple dropdown item">
+        Mon compte
+        <i class="dropdown icon"></i>
+        <div class="menu">
+        {% block userlinks %}
+          {% if site_url %}
+              <a href="{{ site_url }}" class="item">{% trans 'View site' %}</a>
           {% endif %}
-      {% endif %}
-      {% if user.has_usable_password %}
-      <a href="{% url 'admin:password_change' %}" class="item">{% trans 'Change password' %}</a>
-      {% endif %}
-      <a href="{% url 'admin:logout' %}" class="item">{% trans 'Log out' %}</a>
-  {% endblock %}
-  
+          {% if user.is_active and user.is_staff %}
+              {% url 'django-admindocs-docroot' as docsroot %}
+              {% if docsroot %}
+                  <a href="{{ docsroot }}" class="item">{% trans 'Documentation' %}</a>
+              {% endif %}
+          {% endif %}
+          {% if user.has_usable_password %}
+          <a href="{% url 'admin:password_change' %}" class="item">{% trans 'Change password' %}</a>
+          {% endif %}
+          <a href="{% url 'admin:logout' %}" class="item">{% trans 'Log out' %}</a>
+      {% endblock %}
+        </div>
+      </div>
 </div>
 
 <!-- Container -->
@@ -93,7 +98,8 @@
 </div>
 <!-- END Container -->
 
-<script src="{% static "efenua/js/jquery.min.js" %}"></script>
+
 <script src="{% static "efenua/js/semantic.min.js" %}"></script>
+
 </body>
 </html>
