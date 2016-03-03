@@ -17,8 +17,13 @@
 
 <body class="{% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %}"
   data-admin-utc-offset="{% now "Z" %}">
-  
-<div class="ui compact menu">
+
+<!-- Container -->
+<div id="container">
+    {% if not is_popup %}
+    <!-- Header -->
+    
+    <div class="ui compact menu">
 	{% block branding %}{% endblock %}
     
       <div class="ui simple dropdown item">
@@ -42,16 +47,10 @@
       {% endblock %}
         </div>
       </div>
-</div>
-
-<!-- Container -->
-<div id="container">
-    {% if not is_popup %}
-    <!-- Header -->
+	</div>
+    
+    
     <div id="header">
-        <div id="branding">
-        
-        </div>
         {% block usertools %}
         {% if has_permission %}
         <div id="user-tools">
