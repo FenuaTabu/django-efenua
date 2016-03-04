@@ -1,0 +1,20 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+<div id="content-main">
+	{% for object in objects %}
+		<li>{{ object }}</li>
+	{% endfor %}
+	
+	<a href="http://yuml.me/diagram/scruffy/class/draw" target="_blank">yuml</a>
+</div>
+
+{% endblock %}
+
+
+{% block sidebar %}
+
+{% endblock %}
