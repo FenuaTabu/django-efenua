@@ -16,24 +16,23 @@
     {% for app in app_list %}
         <div class="app-{{ app.app_label }} module">
         
+        <table class="ui very compact table">
+          <thead>
+            <tr><th><a href="{{ app.app_url }}" title="{% blocktrans with name=app.name %}Models in the {{ name }} application{% endblocktrans %}">{{ app.name }}</a></th>
+          </tr></thead>
+          <tbody>
+                {% for model in app.models %}
+                    
+                    {% if model.admin_url %}
+                        <tr>
+                          <td><a href="{{ model.admin_url }}">{{ model.name }}</a></td>
+                        </tr>
+                    {% endif %}
 
-
-        
-        
-        
-        <div class="ui vertical menu">
-		  <div class="item">
-		    <div class="header"><a href="{{ app.app_url }}" title="{% blocktrans with name=app.name %}Models in the {{ name }} application{% endblocktrans %}">{{ app.name }}</a></div>
-		    <div class="menu">
-        {% for model in app.models %}
+                {% endfor %}
             
-            {% if model.admin_url %}
-                <a href="{{ model.admin_url }}" class="link item">{{ model.name }}</a>
-            {% endif %}
-
-        {% endfor %}
-        </div></div></div>
-        
+            </tbody>
+        </table>
         </div>
     {% endfor %}
 {% else %}
