@@ -5,10 +5,11 @@
 
 {% block content %}
 <div id="content-main">
-	{% for object in objects %}
-		<li>{{ object }}</li>
+	<div class="ui list">
+    {% for object in objects %}
+		<div class="item">{{ object }}</div>
 	{% endfor %}
-	
+	</div>
 	<a href="http://yuml.me/diagram/scruffy/class/draw" target="_blank">yuml</a>
 </div>
 
