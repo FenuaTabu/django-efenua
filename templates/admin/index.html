@@ -18,17 +18,23 @@
         
         <table class="ui very compact table">
           <thead>
-            <tr><th><a href="{{ app.app_url }}" title="{% blocktrans with name=app.name %}Models in the {{ name }} application{% endblocktrans %}">{{ app.name }}</a></th>
+            <tr><th colspan="2"><a href="{{ app.app_url }}" title="{% blocktrans with name=app.name %}Models in the {{ name }} application{% endblocktrans %}">{{ app.name }}</a></th>
           </tr></thead>
           <tbody>
                 {% for model in app.models %}
-                    
+                    <tr>
+                     <td>
                     {% if model.admin_url %}
-                        <tr>
-                          <td><a href="{{ model.admin_url }}">{{ model.name }}</a></td>
-                        </tr>
-                    {% endif %}
-
+                        <a href="{{ model.admin_url }}">{{ model.name }}</a>
+                    {% else %}
+		                {{ model.name }}</td>
+		            {% endif %}
+		            
+		            {% if model.add_url %}
+                		<a href="{{ model.add_url }}">{% trans 'Add' %}</a>
+		            {% endif %}
+		            </td>
+					</tr>
                 {% endfor %}
             
             </tbody>
@@ -42,8 +48,7 @@
 {% endblock %}
 
 {% block sidebar %}
-<div id="content-related">
-    <div class="module" id="recent-actions-module">
+
         <h2>{% trans 'Recent actions' %}</h2>
         <h3>{% trans 'My actions' %}</h3>
             {% load log %}
@@ -51,24 +56,27 @@
             {% if not admin_log %}
             <p>{% trans 'None available' %}</p>
             {% else %}
-            <ul class="actionlist">
+            
             {% for entry in admin_log %}
-            <li class="{% if entry.is_addition %}addlink{% endif %}{% if entry.is_change %}changelink{% endif %}{% if entry.is_deletion %}deletelink{% endif %}">
-                {% if entry.is_deletion or not entry.get_admin_url %}
-                    {{ entry.object_repr }}
-                {% else %}
-                    <a href="{{ entry.get_admin_url }}">{{ entry.object_repr }}</a>
-                {% endif %}
-                <br/>
-                {% if entry.content_type %}
+            <div class="ui relaxed divided list">
+			  <div class="item">
+			    <div class="content">
+			      <a class="header">{% if entry.is_deletion or not entry.get_admin_url %}
+	                    {{ entry.object_repr }}
+	                {% else %}
+	                    <a href="{{ entry.get_admin_url }}">{{ entry.object_repr }}</a>
+	                {% endif %}</a>
+			      <div class="description">{% if entry.content_type %}
                     <span class="mini quiet">{% filter capfirst %}{{ entry.content_type }}{% endfilter %}</span>
                 {% else %}
                     <span class="mini quiet">{% trans 'Unknown content' %}</span>
-                {% endif %}
-            </li>
+                {% endif %}</div>
+			    </div>
+			  </div>
+			  </div>
+			 
             {% endfor %}
-            </ul>
+            
             {% endif %}
-    </div>
-</div>
+
 {% endblock %}
