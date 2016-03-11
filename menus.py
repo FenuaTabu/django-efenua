@@ -4,11 +4,12 @@ from django.utils.translation import ugettext as _
 
 
 if (lambda request: request.user.is_anonymous) and (lambda request: request.user.has_usable_password):
-    print('PAssw !!')
     Menu.add_item("user", MenuItem(_("Change password"),
                                reverse("admin:password_change"),
                                weight=10,
                                icon="tools",))
+    
+
 
 # Menu.add_item("main", MenuItem(_("View site"),
                                # reverse("site_url"),
@@ -17,10 +18,10 @@ if (lambda request: request.user.is_anonymous) and (lambda request: request.user
                                # check = lambda request: request.docsroot))
                                
 # Menu.add_item("dev", MenuItem(_("Documentation"),
-                               # reverse("django-admindocs-docroot"),
-                               # weight=10,
-                               # icon="tools",
-                               # check = lambda request: request.docsroot))
+#                                reverse("django-admindocs-docroot"),
+#                                weight=10,
+#                                icon="tools",
+#                                check = lambda request: request'django-admindocs-docroot'))
                                
 Menu.add_item("dev", MenuItem(_("yUML"),
                                reverse("efenua:yuml"),

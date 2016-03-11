@@ -1,5 +1,5 @@
 from django import template
-from .. import Menu
+from efenua.menu import Menu
 
 register = template.Library()
 

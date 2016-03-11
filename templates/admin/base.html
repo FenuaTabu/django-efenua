@@ -1,4 +1,5 @@
-{% load i18n static %}<!DOCTYPE html>
+{% load i18n static %}
+<!DOCTYPE html>
 {% get_current_language as LANGUAGE_CODE %}{% get_current_language_bidi as LANGUAGE_BIDI %}
 <html lang="{{ LANGUAGE_CODE|default:"en-us" }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
 <head>
@@ -14,6 +15,8 @@
 
 </head>
 {% load i18n %}
+{% load menu %}
+{% generate_menu %}
 
 <body class="{% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %}"
   data-admin-utc-offset="{% now "Z" %}">
@@ -32,12 +35,16 @@
 		          	<a href="{{ docsroot }}" class="item">{% trans 'Documentation' %}</a>
 		      	{% endif %}
 	      	{% endif %}
-	      	{% if user.has_usable_password %}<a href="{% url 'admin:password_change' %}" class="item">{% trans 'Change password' %}</a>{% endif %}
 	          
 			<div class="right menu">
 				{% if user.is_active and user.is_staff %}
 					{% block userlinks %}
-						<a href="{% url 'admin:logout' %}" class="item">{% trans 'Log out' %}</a>
+						<div class="ui simple dropdown item">Mon compte
+						    <i class="dropdown icon"></i>
+						    <div class="menu">
+						      {% with menu=menus.user %}{% include "efenua/menu/navbar.html" %}{% endwith %}
+						    </div>
+					  	</div>
 					{% endblock %}
 				{% endif %}
 			</div>
@@ -49,9 +56,11 @@
 	<div class="sixteen wide column">
 		<div class="ui grid">
 			{% if user.is_active and user.is_staff %}
+				
 				<div class="three wide column">
 					<div class="ui vertical pointing fluid menu">
-					<div><a href="{% url 'efenua:yuml' %}" class="item">yUML</a></div>
+					{% with menu=menus.dev %}{% include "efenua/menu/navbar.html" %}{% endwith %}
+					
 					</div>
 				</div>
 			{% endif %}

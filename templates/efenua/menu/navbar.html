@@ -13,7 +13,7 @@
                 {% endif %}
             </a>
             {% if item.children %}
-                {% include 'semanticui-navbar-submenu.html' with items=item.children %}
+                {% include 'navbar-submenu.html' with items=item.children %}
             {% endif %}
     {% endif %}
 {% endfor %}

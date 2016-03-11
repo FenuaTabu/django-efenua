@@ -1,6 +1,4 @@
-import copy
-import re
-import sys
+import copy, re, sys
 
 from django.conf import settings
 from django.utils.text import slugify
