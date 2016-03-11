@@ -11,7 +11,7 @@
 {% block blockbots %}<meta name="robots" content="NONE,NOARCHIVE" />{% endblock %}
 
 <script src="{% static "efenua/js/jquery.min.js" %}"></script>
-<link rel="stylesheet" type="text/css" href="{% static "efenua/css/semantic.min.css" %}">
+<link rel="stylesheet" type="text/css" href="{% static "efenua/css/bootstrap.min.css" %}">
 
 </head>
 {% load i18n %}
@@ -21,74 +21,77 @@
 <body class="{% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %}"
   data-admin-utc-offset="{% now "Z" %}">
   
-  <!-- Container -->
-  <div class="ui grid">
-	
-	<!-- Header -->
-	<div class="sixteen wide column">
-		<div class="ui menu">
-			<div class="item">{% block branding %}{% endblock %}</div>
-		  	{% if site_url %}<a href="{{ site_url }}" class="item">{% trans 'View site' %}</a>{% endif %}
-		  	{% if user.is_active and user.is_staff %}
-		      	{% url 'django-admindocs-docroot' as docsroot %}
-		      	{% if docsroot %}
-		          	<a href="{{ docsroot }}" class="item">{% trans 'Documentation' %}</a>
-		      	{% endif %}
+  {% if user.is_active and user.is_staff %}
+  <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      {% block branding %}{% endblock %}
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+		<ul class="nav navbar-nav">
+			{% if site_url %}<li><a href="{{ site_url }}" class="item">{% trans 'View site' %}</a></li>{% endif %}
+			{% url 'django-admindocs-docroot' as docsroot %}
+	      	{% if docsroot %}
+	          	<li><a href="{{ docsroot }}" class="item">{% trans 'Documentation' %}</a></li>
 	      	{% endif %}
-	          
-			<div class="right menu">
-				{% if user.is_active and user.is_staff %}
-					{% block userlinks %}
-						<div class="ui simple dropdown item">Mon compte
-						    <i class="dropdown icon"></i>
-						    <div class="menu">
-						      {% with menu=menus.user %}{% include "efenua/menu/navbar.html" %}{% endwith %}
-						    </div>
-					  	</div>
-					{% endblock %}
-				{% endif %}
-			</div>
-		</div>
-	</div>
-	<!-- Header -->
-	
-	<!-- Sidebar -->
-	<div class="sixteen wide column">
-		<div class="ui grid">
+      	</ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></a>
+          <ul class="dropdown-menu">
+			{% block userlinks %}
+				{% with menu=menus.user %}{% include "efenua/menu/navbar.html" %}{% endwith %}
+			{% endblock %}
+          </ul>
+        </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+{% endif %}
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-2">
 			{% if user.is_active and user.is_staff %}
-				
-				<div class="three wide column">
-					<div class="ui vertical pointing fluid menu">
-					{% with menu=menus.dev %}{% include "efenua/menu/navbar.html" %}{% endwith %}
-					
-					</div>
+				<div class="panel panel-default">
+				  <div class="panel-heading">
+				    <h3 class="panel-title">Dev</h3>
+				  </div>
+				  	<ul class="nav nav-pills nav-stacked">
+					{% with menu=menus.dev %}{% include "efenua/menu/navs.html" %}{% endwith %}
+					</ul>
 				</div>
+				
 			{% endif %}
-			<!-- Content -->
-			<div class="nine wide column">
-			        {% block usertools %}
-				        {% if has_permission %}
-				        <div id="user-tools">
-				            {% block welcome-msg %}
-				                {% trans 'Welcome,' %}
-				                <strong>{% firstof user.get_short_name user.get_username %}</strong>.
-				            {% endblock %}
-				        </div>
-				        {% endif %}
-			        {% endblock %}
-			        
+		</div>
+			
+		<div class="col-md-8">
 			        {% block breadcrumbs %}
-				    	<div class="breadcrumbs">
-				    		<a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
-				    		{% if title %} &rsaquo; {{ title }}{% endif %}
-				    	</div>
+					  <div class="row">
+						<div class="col-md-22">
+					        <a href="{% url 'admin:index' %}" class="breadcrumb">{% trans 'Home' %}</a>
+							{% if title %} &rsaquo; {{ title }}{% endif %}
+					    </div>
+					  </div>
 				    {% endblock %}
 				    
 				    {% block messages %}
 				        {% if messages %}
 				        <ul class="messagelist">{% for message in messages %}
 				          <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
-				        {% endfor %}</ul>
+				        {% endfor %}
+				        </ul>
 				        {% endif %}
 				    {% endblock messages %}
 				    
@@ -99,37 +102,25 @@
 			        	{% block object-tools %}{% endblock %}
 			        	{{ content }}
 			        {% endblock %}
-			</div>
-			<!-- Content -->
-		  
-		  
-			<div class="four">
-				{% block sidebar %}{% endblock %}
-			</div>
+		</div>
+		
+		<div class="col-md-2">{% block sidebar %}{% endblock %}</div>
+	</div>
 	
+	<div class="row">
+		<div class="col-md-12">
+			{% block footer %}{% endblock %}
 		</div>
 	</div>
-	<!-- Sidebar -->
-	
- </div>
-<!-- Container -->
-
+</div>
 
 
     {% if not is_popup %}
-
         {% block nav-global %}{% endblock %}
-
-
     {% endif %}
 
-
-
-    {% block footer %}{% endblock %}
-
-
-
-<script src="{% static "efenua/js/semantic.min.js" %}"></script>
+{% block extrafoot %}{% endblock %}
+<script src="{% static "efenua/js/bootstrap.min.js" %}"></script>
 
 </body>
 </html>
