@@ -14,6 +14,18 @@ from django.contrib.admin.sites import site
 
 from django import forms
 from django.utils.html import escape
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.auth.models import User
+from django.db import models
+
+class Favorite(models.Model):
+
+    class Meta:
+        unique_together = ('user', 'ctype', 'item')
+
+    user = models.ForeignKey(User, related_name='user_favorites')
+    ctype = models.ForeignKey(ContentType, related_name='ctype_favorite')
+    item = models.PositiveIntegerField()
 
 class VerboseForeignKeyRawIdWidget(ForeignKeyRawIdWidget):
     def label_for_value(self, value):
