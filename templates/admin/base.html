@@ -21,7 +21,7 @@
 <body class="{% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %}"
   data-admin-utc-offset="{% now "Z" %}">
   
-  {% if user.is_active and user.is_staff %}
+  {% if user.is_active and user.is_staff and not is_popup %}
   <nav class="navbar navbar-default">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -61,8 +61,9 @@
 {% endif %}
 
 <div class="container-fluid">
-	<div class="row">
-		<div class="col-md-2">
+    <div class="row">
+		{% if not is_popup %}
+        <div class="col-md-2">
 			{% if user.is_active and user.is_staff %}
 				<div class="panel panel-default">
 				  <div class="panel-heading">
@@ -75,15 +76,18 @@
 				
 			{% endif %}
 		</div>
+        {% endif %}
 			
 		<div class="col-md-8">
 			        {% block breadcrumbs %}
-					  <div class="row">
-						<div class="col-md-22">
-					        <a href="{% url 'admin:index' %}" class="breadcrumb">{% trans 'Home' %}</a>
-							{% if title %} &rsaquo; {{ title }}{% endif %}
-					    </div>
-					  </div>
+					  {% if not is_popup %}
+                          <div class="row">
+                            <div class="col-md-12">
+                                <a href="{% url 'admin:index' %}" class="breadcrumb">{% trans 'Home' %}</a>
+                                {% if title %} &rsaquo; {{ title }}{% endif %}
+                            </div>
+                          </div>
+                      {% endif %}
 				    {% endblock %}
 				    
 				    {% block messages %}
