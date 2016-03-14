@@ -1,0 +1,15 @@
+{% load i18n %}
+
+<ul class="nav nav-pills nav-stacked">
+<div class="dropdown">
+  <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+      {% blocktrans with filter_title=title %} By {{ filter_title }} {% endblocktrans %} <span class="caret"></span>
+    </a>
+    
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+    {% for choice in choices %}
+		    <li class="{% if choice.selected %}active{% endif %}"><a href="{{ choice.query_string|iriencode }}">{{ choice.display }}</a></li>
+		{% endfor %}
+  </ul>
+</div>
+</ul>

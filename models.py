@@ -17,6 +17,7 @@ from django.utils.html import escape
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import User
 from django.db import models
+from django.conf import settings
 
 class Favorite(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL)

@@ -1,0 +1,32 @@
+{% extends "admin/change_list.html" %}
+{% load i18n admin_urls static admin_list %}
+
+{% block sidebar %}
+
+	{% search_form cl %}
+	<br />
+  
+  {% if cl.has_filters %}
+  	<div class="panel panel-default">
+    	<div class="panel-heading">{% trans 'Filter' %}</div>
+    	<div class="panel-body">
+      		{% for spec in cl.filter_specs %}{% admin_list_filter cl spec %}{% endfor %}
+      	</div>
+    </div>
+  {% endif %}
+  
+  <div class="panel panel-default">
+  <div class="panel-body">
+  {% if action_form and actions_on_top and cl.show_admin_actions %}{% admin_actions %}{% endif %}
+  </div>
+  </div>
+  
+{% endblock %}
+
+{% block result_list %}
+    {% result_list cl %}
+    {% if action_form and actions_on_bottom and cl.show_admin_actions %}{% admin_actions %}{% endif %}
+{% endblock %}
+
+{% block filters %}{% endblock %}
+{% block search %}{% endblock %}
