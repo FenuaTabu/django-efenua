@@ -1,16 +1,29 @@
 {% extends "admin/change_form.html" %}
+{% load i18n admin_urls static admin_modify %}
 
-{% block object-tools-items %}
-  {% for tool in objectactions %}
-    <li class="objectaction-item" data-tool-name="{{ tool.name }}">
-      <a href='{% url tools_view_name pk=object_id tool=tool.name %}' title="{{ tool.standard_attrs.title }}"
-         {% for k, v in tool.custom_attrs.items %}
-           {{ k }}="{{ v }}"
-         {% endfor %}
-         class="{{ tool.standard_attrs.class }}">
-      {{ tool.label|capfirst }}
-      </a>
-    </li>
-  {% endfor %}
-  {{ block.super }}
+{% block sidebar %}
+  
+  {% if change %}{% if not is_popup %}
+    <div class="panel panel-default">
+    <div class="panel-heading">Actions</div>
+        <ul class="list-group">
+          {% for tool in objectactions %}
+          <a href='{% url tools_view_name pk=object_id tool=tool.name %}' title="{{ tool.standard_attrs.title }}" class="list-group-item"
+             {% for k, v in tool.custom_attrs.items %}
+               {{ k }}="{{ v }}"
+             {% endfor %}
+             class="{{ tool.standard_attrs.class }}">
+          {{ tool.label|capfirst }}
+          </a>
+          {% endfor %}
+          {% url opts|admin_urlname:'history' original.pk|admin_urlquote as history_url %}
+          <a href="{% add_preserved_filters history_url %}" class="list-group-item"><span class="glyphicon glyphicon-time" aria-hidden="true"></span> {% trans "History" %}</a>
+
+        {% if has_absolute_url %}<a href="{{ absolute_url }}" class="list-group-item">{% trans "View on site" %}</a>{% endif %}
+        </ul>
+    </div>
+  {% endif %}{% endif %}
+  
 {% endblock %}
+
+{% block object-tools %}{% endblock %}
