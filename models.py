@@ -19,13 +19,15 @@ from django.contrib.auth.models import User
 from django.db import models
 
 class Favorite(models.Model):
-
-    class Meta:
-        unique_together = ('user', 'ctype', 'item')
-
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='user_favorites')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
     ctype = models.ForeignKey(ContentType, related_name='ctype_favorite')
     item = models.PositiveIntegerField()
+    deadline = models.DateField(null=True, blank=True)
+    label = models.CharField(null=True, max_length=150)
+    description = models.TextField(null=True, blank=True)
+    
+    class Meta:
+        unique_together = ('user', 'ctype', 'item')
 
 class VerboseForeignKeyRawIdWidget(ForeignKeyRawIdWidget):
     def label_for_value(self, value):
