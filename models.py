@@ -23,7 +23,7 @@ class Favorite(models.Model):
     class Meta:
         unique_together = ('user', 'ctype', 'item')
 
-    user = models.ForeignKey(User, related_name='user_favorites')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='user_favorites')
     ctype = models.ForeignKey(ContentType, related_name='ctype_favorite')
     item = models.PositiveIntegerField()
 
