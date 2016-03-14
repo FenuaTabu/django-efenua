@@ -5,8 +5,11 @@ A Django app for adding extra in the admin.
 
 ## Ajouter une colonne
 ```python
+#admin.py
 from efenua.models import EfenuaModelAdmin
+from efenua.decorators import field
 
+@admin.register(Mymodel)
 class MymodelAdmin(EfenuaModelAdmin)
     list_display = ['foo']
     
@@ -17,9 +20,11 @@ class MymodelAdmin(EfenuaModelAdmin)
 
 ## Ajouter une action
 ```python
+#admin.py
 from efenua.models import EfenuaModelAdmin
 from efenua.decorators import action
 
+@admin.register(Mymodel)
 class MymodelAdmin(EfenuaModelAdmin)
     actions = ['foo']
     objectactions = ['foo']
@@ -29,13 +34,14 @@ class MymodelAdmin(EfenuaModelAdmin)
         queryset.update(field='value')
 ```
 
-# Ajouter des favoris sur des models
+# Ajouter des favoris sur des modeles
 ```python
+#admin.py
+from efenua.models import EfenuaModelAdmin
 from efenua.utils import FavoriteFilter, add_to_favorite, delete_from_favorite
 
-@admin.register(MyModel)
-class MyModelAdmin(EfenuaModelAdmin):
+@admin.register(Mymodel)
+class MymodelAdmin(EfenuaModelAdmin):
     list_filter = (FavoriteFilter,)
     actions = (add_to_favorite, delete_from_favorite)
-admin.site.register(MyModel, MyModelAdmin)
 ```
