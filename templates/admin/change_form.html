@@ -2,8 +2,7 @@
 {% load i18n admin_urls static admin_modify %}
 
 {% block sidebar %}
-  
-  {% if change %}{% if not is_popup %}
+  {% if change and not is_popup %}
     <div class="panel panel-default">
     <div class="panel-heading">Actions</div>
         <ul class="list-group">
@@ -22,8 +21,7 @@
         {% if has_absolute_url %}<a href="{{ absolute_url }}" class="list-group-item">{% trans "View on site" %}</a>{% endif %}
         </ul>
     </div>
-  {% endif %}{% endif %}
-  
+  {% endif %}
 {% endblock %}
 
 {% block object-tools %}{% endblock %}
