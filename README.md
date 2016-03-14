@@ -3,17 +3,25 @@ A Django app for adding extra in the admin.
 
 # Decorateur
 ```python
-list_display = ['foo']
+from efenua.models import EfenuaModelAdmin
 
-@field('my short description', admin_order_field='author.firstname', allow_tags=True)
-def foo(self, obj):
-    return obj.author.first_name
+class MymodelAdmin(EfenuaModelAdmin)
+    list_display = ['foo']
+    
+    @field('my short description', admin_order_field='author.firstname', allow_tags=True)
+    def foo(self, obj):
+        return obj.author.first_name
 ```
 
 ```python
-@action('my label', 'my short description')
-def foo(self, request, queryset):
-    queryset.update(field='value')
+from efenua.models import EfenuaModelAdmin
+
+class MymodelAdmin(EfenuaModelAdmin)
+    actions = ['foo']
+    
+    @action('my label', 'my short description')
+    def foo(self, request, queryset):
+        queryset.update(field='value')
 ```
 
 # Ajouter des favoris sur des models
