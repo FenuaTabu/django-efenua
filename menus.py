@@ -24,7 +24,7 @@ if (lambda request: request.user.is_anonymous) and (lambda request: request.user
 #                                check = lambda request: request'django-admindocs-docroot'))
                                
 Menu.add_item("dev", MenuItem(_("yUML"),
-                               reverse("efenua:yuml"),
+                               reverse("yuml"),
                                weight=10,
                                icon="tools"))
                                
