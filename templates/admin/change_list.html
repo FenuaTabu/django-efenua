@@ -15,11 +15,13 @@
     </div>
   {% endif %}
   
+  {% if action_form and actions_on_top and cl.show_admin_actions %}
   <div class="panel panel-default">
   <div class="panel-body">
-  {% if action_form and actions_on_top and cl.show_admin_actions %}{% admin_actions %}{% endif %}
+    {% admin_actions %}
   </div>
   </div>
+  {% endif %}
   
 {% endblock %}
 
