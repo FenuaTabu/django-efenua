@@ -75,10 +75,14 @@ def yuml(request):
                     if str(field.rel.to._meta) not in excludes:
                         relations.append("[%s]0..*-0..*[%s]" % (model._meta, field.rel.to._meta))
                 
-                elif field.__class__.__name__=='ManyToOneRel' or field.__class__.__name__=='ManyToManyRel':
+                elif field.__class__.__name__=='ManyToOneRel' or field.__class__.__name__=='ManyToManyRel' or field.__class__.__name__=='GenericForeignKey':
+                    pass
+                    
+                elif field.__class__.__name__=='OneToOneRel':
                     pass
                 
                 else:
+                    pass
                     r += "%s:%s;" % (field.attname, field.__class__.__name__)
             result.append('[' + r  + ']')
             for relation in relations:
