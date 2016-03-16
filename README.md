@@ -1,6 +1,25 @@
 # django-efenua
 A Django app for adding extra in the admin.
 
+#Pre requis
+Ajouter dans INSTALLED_APPS
+ ```
+ INSTALLED_APPS = [
+    .
+    .
+    'efenua',
+]
+```
+
+Ajouter dans MIDDLEWARE_CLASSES
+```
+MIDDLEWARE_CLASSES = [
+    .
+    .
+    'efenua.middleware.current_user.CurrentUserMiddleware',
+]
+```
+
 # Decorateurs
 
 ## Ajouter une colonne
