@@ -64,7 +64,17 @@
 		{% if not is_popup %}
         <div class="col-md-2">
 			{% if user.is_active and user.is_staff %}
-				<div class="panel panel-default">
+				
+                <div class="panel panel-default">
+				  <div class="panel-heading">
+				    <h3 class="panel-title">Navigation</h3>
+				  </div>
+				  	<ul class="nav nav-pills nav-stacked">
+					{% with menu=menus.main %}{% include "efenua/menu/navs.html" %}{% endwith %}
+					</ul>
+				</div>
+                
+                <div class="panel panel-default">
 				  <div class="panel-heading">
 				    <h3 class="panel-title">Dev</h3>
 				  </div>
