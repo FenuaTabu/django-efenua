@@ -3,12 +3,11 @@ from django.contrib import admin
 from django.contrib.contenttypes.models import ContentType
 
 from efenua.models import Favorite
-from efenua.fake_field import favorite_field
-from efenua.utils import FavoriteFilter, add_to_favorite, delete_from_favorite
+
 
 @admin.register(Favorite)
 class FavoriteAdmin(admin.ModelAdmin):
-    list_display = ['label', 'ctype', 'deadline', favorite_field]
+    list_display = ['label', 'ctype', 'deadline']
 
     def queryset(self, request):
         queryset = super(FavoriteAdmin, self).queryset(request)
