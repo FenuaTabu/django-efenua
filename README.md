@@ -20,6 +20,31 @@ MIDDLEWARE_CLASSES = [
 ]
 ```
 
+# Favori
+Pour ajouter une colonne favorie dans list_view
+```python
+from efenua.fake_field import favorite_field
+
+class FooAdmin(admin.ModelAdmin):
+    list_display = ['...', favorite_field]
+```
+
+Pour ajouter un filtre favori
+```python
+from efenua.utils import FavoriteFilter
+
+class FooAdmin(admin.ModelAdmin):
+	list_filter = (FavoriteFilter,)
+```
+
+Pour ajouter des actions favoris
+```python
+from efenua.utils import add_to_favorite, delete_from_favorite
+
+class FooAdmin(admin.ModelAdmin):
+	actions = [add_to_favorite, delete_from_favorite]
+```
+
 # Decorateurs
 
 ## Ajouter une colonne

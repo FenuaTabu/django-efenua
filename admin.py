@@ -8,12 +8,7 @@ from efenua.utils import FavoriteFilter, add_to_favorite, delete_from_favorite
 
 @admin.register(Favorite)
 class FavoriteAdmin(admin.ModelAdmin):
-    list_display = ['label', 'ctype', 'deadline']
-    # list_filter = (FavoriteFilter,)
-    # actions = [add_to_favorite, delete_from_favorite]
-
-    def get_list_display(self, request):
-        return list(self.list_display) + [favorite_field]
+    list_display = ['label', 'ctype', 'deadline', favorite_field]
 
     def queryset(self, request):
         queryset = super(FavoriteAdmin, self).queryset(request)
