@@ -1,19 +1,18 @@
-{% for item in menu %}
-    {% if item.visible %}
-        {% if item.separator %}
-            <li class="divider-vertical"></li>
-        {% endif %}
-            <li><a href="{{ item.url }}"{% if item.children %} class="dropdown-toggle" data-hover="dropdown" data-toggle="dropdown"{% endif %} class="collection-item {% if item.selected %}active{% endif %}">
+<ul class="dropdown-menu">
+    {% for item in items %}
+        {% if item.visible %}
+            <li class="{% if item.selected %} active{% endif %}{% if item.children %} dropdown-submenu{% endif %}">
+                <a href="{{ item.url }}">
                 {% if item.icon %}
                     <span class="glyphicon glyphicon-{{ item.icon }}" aria-hidden="true"></span>&nbsp;
                 {% endif %}
-                <span>{{ item.title }}</span>
+                {{ item.title }}</a>
                 {% if item.children %}
-                    &nbsp;<b class="caret"></b>
+                    {% with items=item.children template_name='bootstrap-navbar-submenu.html' %}
+                       {% include template_name %}
+                    {% endwith %}
                 {% endif %}
-            </a></li>
-            {% if item.children %}
-                {% include 'efenua/menu/navbar-submenu.html' with items=item.children %}
-            {% endif %}
-    {% endif %}
-{% endfor %}
+            </li>
+        {% endif %}
+    {% endfor %}
+</ul>
