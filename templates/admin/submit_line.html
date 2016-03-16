@@ -9,6 +9,8 @@
 
         <div class="btn-group">
           {% if show_save %}<button type="submit" class="btn btn-primary" name="_save" /><span class="glyphicon glyphicon-save" aria-hidden="true"></span> {% trans 'Save' %}</button>{% endif %}
+          
+          {% if show_save_as_new or show_save_and_add_another or show_save_and_continue %}
           <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="caret"></span>
             <span class="sr-only">Toggle Dropdown</span>
@@ -18,6 +20,7 @@
             {% if show_save_and_add_another %}<li><button type="submit" name="_addanother" class="btn btn-link">{% trans 'Save and add another' %}</button></li>{% endif %}
             {% if show_save_and_continue %}<li><button type="submit" name="_continue" class="btn btn-link">{% trans 'Save and continue editing' %}</button></li>{% endif %}
           </ul>
+          {% endif %}
         </div>
     </div>
 </div>

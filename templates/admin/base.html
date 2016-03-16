@@ -65,6 +65,7 @@
         <div class="col-md-2">
 			{% if user.is_active and user.is_staff %}
 				
+                {% if menus.main %}
                 <div class="panel panel-default">
 				  <div class="panel-heading">
 				    <h3 class="panel-title">Navigation</h3>
@@ -73,7 +74,9 @@
 					{% with menu=menus.main %}{% include "efenua/menu/navs.html" %}{% endwith %}
 					</ul>
 				</div>
+				{% endif %}
                 
+                {% if user.is_superuser %}
                 <div class="panel panel-default">
 				  <div class="panel-heading">
 				    <h3 class="panel-title">Dev</h3>
@@ -82,6 +85,7 @@
 					{% with menu=menus.dev %}{% include "efenua/menu/navs.html" %}{% endwith %}
 					</ul>
 				</div>
+				{% endif %}
 				
 			{% endif %}
 		</div>

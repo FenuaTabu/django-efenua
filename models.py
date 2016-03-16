@@ -18,9 +18,10 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import User
 from django.db import models
 from django.conf import settings
+from efenua.middleware.current_user import get_current_user
 
 class Favorite(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, default=get_current_user, editable = False)
     ctype = models.ForeignKey(ContentType, related_name='ctype_favorite')
     item = models.PositiveIntegerField()
     deadline = models.DateField(null=True, blank=True)
@@ -43,7 +44,7 @@ class VerboseForeignKeyRawIdWidget(ForeignKeyRawIdWidget):
                     "admin:%s_%s_change" % (obj._meta.app_label, obj._meta.object_name.lower()),
                     args=(obj.pk,)
                 )
-                return '<div class="ui label"><a href="%s">%s</a></div>' % (change_url, escape(obj))
+                return '<a href="%s" class="label label-default">%s</a>' % (change_url, escape(obj))
         except (ValueError, self.rel.to.DoesNotExist):
             return '???'
 
@@ -63,27 +64,12 @@ class VerboseManyToManyRawIdWidget(ManyToManyRawIdWidget):
                         "admin:%s_%s_change" % (obj._meta.app_label, obj._meta.object_name.lower()),
                         args=(obj.pk,)
                     )
-                    str_values += ['<div class="ui label"><a href="%s">%s</a></div>' % (change_url, escape(x))]
+                    str_values += ['<a href="%s" class="label label-default">%s</a>' % (change_url, escape(x))]
             except self.rel.to.DoesNotExist:
                 str_values += [u'???']
         return u', '.join(str_values)
 
 class EfenuaModelAdmin(admin.ModelAdmin):
-    
-    """
-    ModelAdmin mixin to add object-tools just like adding admin actions.
-
-    Attributes
-    ----------
-    model : django.db.models.Model
-        The Django Model these tools work on. This is populated by Django.
-    objectactions : list
-        Write the names of the callable attributes (methods) of the model admin
-        that can be used as tools.
-    tools_view_name : str
-        The name of the Django Object Actions admin view, including the 'admin'
-        namespace. Populated by `get_tool_urls`.
-    """
     objectactions = []
     tools_view_name = None
     
@@ -99,7 +85,6 @@ class EfenuaModelAdmin(admin.ModelAdmin):
         return super(EfenuaModelAdmin, self).formfield_for_dbfield(db_field, **kwargs)
 
     def get_tool_urls(self):
-        """Get the url patterns that route each tool to a special view."""
         tools = {}
 
         # Look for the default change view url and use that as a template
@@ -133,15 +118,12 @@ class EfenuaModelAdmin(admin.ModelAdmin):
     #################################
 
     def get_urls(self):
-        """Prepend `get_urls` with our own patterns."""
         urls = super(EfenuaModelAdmin, self).get_urls()
         return self.get_tool_urls() + urls
 
     def render_change_form(self, request, context, **kwargs):
-        """Put `objectactions` into the context."""
 
         def to_dict(tool_name):
-            """To represents the tool func as a dict with extra meta."""
             tool = getattr(self, tool_name)
             standard_attrs, custom_attrs = self.get_djoa_button_attrs(tool)
             return dict(
@@ -163,30 +145,9 @@ class EfenuaModelAdmin(admin.ModelAdmin):
     ################
 
     def get_object_actions(self, request, context, **kwargs):
-        """
-        Override this method to customize what actions get sent.
-
-        For example, to restrict actions to superusers, you could do:
-
-            class ChoiceAdmin(DjangoObjectActions, admin.ModelAdmin):
-                def get_object_actions(self, request, context, **kwargs):
-                    if request.user.is_superuser:
-                        return super(ChoiceAdmin, self).get_object_actions(
-                            request, context, **kwargs
-                        )
-                    return []
-        """
         return self.objectactions
 
     def get_djoa_button_attrs(self, tool):
-        """
-        Get the HTML attributes associated with a tool.
-
-        There are some standard attributes (class and title) that the template
-        will always want. Any number of additional attributes can be specified
-        and passed on. This is kinda awkward and due for a refactor for
-        readability.
-        """
         attrs = getattr(tool, 'attrs', {})
         # href is not allowed to be set. should an exception be raised instead?
         if 'href' in attrs:
@@ -210,18 +171,6 @@ class EfenuaModelAdmin(admin.ModelAdmin):
         return standard_attrs, custom_attrs
         
 class ModelToolsView(SingleObjectMixin, View):
-    """
-    The view that runs the tool's callable.
-
-    Attributes
-    ----------
-    back : str
-        The urlpattern name to send users back to. Defaults to the change view.
-    model : django.db.model.Model
-        The model this tool operates on.
-    tools : dict
-        A mapping of tool names to tool callables.
-    """
     back = None
     model = None
     tools = None
@@ -246,10 +195,4 @@ class ModelToolsView(SingleObjectMixin, View):
     post = get
 
     def message_user(self, request, message):
-        """
-        Mimic Django admin actions's `message_user`.
-
-        Like the second example:
-        https://docs.djangoproject.com/en/1.9/ref/contrib/admin/actions/#custom-admin-action
-        """
         messages.info(request, message)
