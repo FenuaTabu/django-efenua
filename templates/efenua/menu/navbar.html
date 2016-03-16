@@ -5,7 +5,7 @@
         {% endif %}
             <li><a href="{{ item.url }}"{% if item.children %} class="dropdown-toggle" data-hover="dropdown" data-toggle="dropdown"{% endif %} class="collection-item {% if item.selected %}active{% endif %}">
                 {% if item.icon %}
-                    <i class="icon-{{ item.icon }} icon-white"></i>&nbsp;
+                    <span class="glyphicon glyphicon-{{ item.icon }}" aria-hidden="true"></span>&nbsp;
                 {% endif %}
                 <span>{{ item.title }}</span>
                 {% if item.children %}
@@ -13,7 +13,7 @@
                 {% endif %}
             </a></li>
             {% if item.children %}
-                {% include 'collection-submenu.html' with items=item.children %}
+                {% include 'efenua/menu/navbar-submenu.html' with items=item.children %}
             {% endif %}
     {% endif %}
 {% endfor %}
