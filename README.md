@@ -3,7 +3,7 @@ A Django app for adding extra in the admin.
 
 #Pre requis
 Ajouter dans INSTALLED_APPS
- ```
+```python
  INSTALLED_APPS = [
     .
     .
@@ -12,7 +12,7 @@ Ajouter dans INSTALLED_APPS
 ```
 
 Ajouter dans MIDDLEWARE_CLASSES
-```
+```python
 MIDDLEWARE_CLASSES = [
     .
     .
