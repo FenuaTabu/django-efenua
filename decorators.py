@@ -12,7 +12,6 @@ def action(label, short_description=None):
             """Decorator that makes standard Django admin actions compatible."""
             @wraps(func)
             def decorated_function(self, request, queryset):
-                print('ffoop')
                 if not isinstance(queryset, QuerySet):
                     queryset = self.get_queryset(request).filter(pk=queryset.pk)
                 return func(self, request, queryset)

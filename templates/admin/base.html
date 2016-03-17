@@ -11,6 +11,7 @@
 
 <script src="{% static "efenua/js/jquery.min.js" %}"></script>
 <link rel="stylesheet" type="text/css" href="{% static "efenua/css/bootstrap.min.css" %}">
+<link rel="stylesheet" type="text/css" href="{% static "efenua/css/bootstrap-select.min.css" %}">
 
 </head>
 {% load i18n %}
@@ -92,16 +93,17 @@
         {% endif %}
 			
 		<div class="col-md-8">
-			        {% block breadcrumbs %}
-					  {% if not is_popup %}
+			        {% if not is_popup %}
+			        	{% block breadcrumbs %}
                           <div class="row">
                             <div class="col-md-12">
                                 <a href="{% url 'admin:index' %}" class="breadcrumb">{% trans 'Home' %}</a>
                                 {% if title %} &rsaquo; {{ title }}{% endif %}
                             </div>
                           </div>
-                      {% endif %}
-				    {% endblock %}
+                          {% endblock %}
+                    {% endif %}
+				    
 				    
 				    {% block messages %}
 				        {% if messages %}
@@ -138,6 +140,7 @@
 
 {% block extrafoot %}{% endblock %}
 <script src="{% static "efenua/js/bootstrap.min.js" %}"></script>
+<script src="{% static "efenua/js/bootstrap-select.min.js" %}"></script>
 
 </body>
 </html>

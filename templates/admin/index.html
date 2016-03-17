@@ -10,6 +10,7 @@
 {% block breadcrumbs %}{% endblock %}
 
 {% block content %}
+
 	{% if user.is_superuser %}
 		{% if app_list %}
 		    {% for app in app_list %}

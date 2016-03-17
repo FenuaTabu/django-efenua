@@ -17,6 +17,11 @@ MIDDLEWARE_CLASSES = [
     'efenua.middleware.current_user.CurrentUserMiddleware',
 ]
 ```
+
+# Fonctionnaliés
+- Nouvelle interface ADMIN
+- Amélioration du `raw_id_fields`
+
 # Export
 Pour ajouter une action export CSV
 ```python
