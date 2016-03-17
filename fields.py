@@ -6,13 +6,14 @@ from django.conf import settings
 
 from efenua.models import Favorite
 from efenua.views import add_to_favorite
+from efenua.decorators import field
 
 ADFAV_ADD_LABEL = getattr(settings, 'ADFAV_ADD_LABEL', _('Add'))
 ADFAV_DELETE_LABEL = getattr(settings, 'ADFAV_DELETE_LABEL', _('Delete'))
 ADFAV_HEADER_LABEL = getattr(settings, 'ADFAV_HEADER_LABEL', _('Favorite'))
 
-
-def favorite_field(self):
+@field(ADFAV_HEADER_LABEL, allow_tags=True)
+def favoriteField(self):
     model = self.__class__
     app_label = model._meta.app_label
     model_name = model._meta.model_name
@@ -32,5 +33,3 @@ def favorite_field(self):
             })
         result = '<a href="%s?next=%s">%s</a>' % (url, getattr(model, 'next', ''), ADFAV_DELETE_LABEL)
     return result
-favorite_field.short_description = ADFAV_HEADER_LABEL
-favorite_field.allow_tags = True

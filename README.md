@@ -5,8 +5,7 @@ A Django app for adding extra in the admin.
 Ajouter dans INSTALLED_APPS
 ```python
  INSTALLED_APPS = [
-    .
-    .
+    ...
     'efenua',
 ]
 ```
@@ -14,35 +13,50 @@ Ajouter dans INSTALLED_APPS
 Ajouter dans MIDDLEWARE_CLASSES
 ```python
 MIDDLEWARE_CLASSES = [
-    .
-    .
+    ...
     'efenua.middleware.current_user.CurrentUserMiddleware',
 ]
 ```
+# Export
+Pour ajouter une action export CSV
+```python
+#admin.py
+from efenua.models import EfenuaModelAdmin
+from efenua.actions import export_as_csvAction
 
-# Favori
+class FooAdmin(EfenuaModelAdmin):
+    actions = ['...', export_as_csvAction(fields=['title'])]
+```
+.
+# Favoris
 Pour ajouter une colonne favorie dans list_view
 ```python
-from efenua.fake_field import favorite_field
+#admin.py
+from efenua.models import EfenuaModelAdmin
+from efenua.fields import favoriteField
 
-class FooAdmin(admin.ModelAdmin):
-    list_display = ['...', favorite_field]
+class FooAdmin(EfenuaModelAdmin):
+    list_display = ['...', favoriteField]
 ```
 
 Pour ajouter un filtre favori
 ```python
-from efenua.utils import FavoriteFilter
+#admin.py
+from efenua.models import EfenuaModelAdmin
+from efenua.filters import FavoriteFilter
 
-class FooAdmin(admin.ModelAdmin):
-	list_filter = (FavoriteFilter,)
+class FooAdmin(EfenuaModelAdmin):
+	list_filter = ['...', FavoriteFilter]
 ```
 
 Pour ajouter des actions favoris
 ```python
-from efenua.utils import add_to_favorite, delete_from_favorite
+#admin.py
+from efenua.models import EfenuaModelAdmin
+from efenua.actions import add_to_favoriteAction, delete_from_favoriteAction
 
-class FooAdmin(admin.ModelAdmin):
-	actions = [add_to_favorite, delete_from_favorite]
+class FooAdmin(EfenuaModelAdmin):
+	actions = ['...', add_to_favoriteAction, delete_from_favoriteAction]
 ```
 
 # Decorateurs
@@ -78,14 +92,3 @@ class MymodelAdmin(EfenuaModelAdmin)
         queryset.update(field='value')
 ```
 
-# Ajouter des favoris sur des modeles
-```python
-#admin.py
-from efenua.models import EfenuaModelAdmin
-from efenua.utils import FavoriteFilter, add_to_favorite, delete_from_favorite
-
-@admin.register(Mymodel)
-class MymodelAdmin(EfenuaModelAdmin):
-    list_filter = (FavoriteFilter,)
-    actions = (add_to_favorite, delete_from_favorite)
-```

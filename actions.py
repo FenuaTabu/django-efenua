@@ -1,9 +1,45 @@
 import csv
 from django.http import HttpResponse
+from django.utils.translation import ugettext_lazy as _
+from django.contrib.contenttypes.models import ContentType
+from efenua.decorators import action
 
+@action(_('Ajouter aux favoris'), _('Ajouter aux favoris'))
+def add_to_favoriteAction(modeladmin, request, queryset):
+    model = modeladmin.model
+    model_name = model._meta.model_name
+    app_label = model._meta.app_label
+    try:
+        ctype_id = ContentType.objects.get(app_label=app_label, 
+                                            model=model_name).id
+    except ContentType.DoesNotExist:
+        pass
+    else:
+        qs_ids = [q.id for q in queryset]
+        exist_ids = Favorite.objects.filter(user_id=request.user.id,
+                                    ctype_id=ctype_id,
+                                    item__in=qs_ids)
+        queryset = queryset.exclude(id__in=exist_ids)
+        for q in queryset:
+            Favorite.objects.create(user_id=request.user.id, item=q.id, ctype_id=ctype_id)
 
-def export_as_csv_action(description="Export selected objects as CSV file",
-                         fields=None, exclude=None, header=True):
+@action(_('Enlever des favoris'), _('Enlever Des favoris'))
+def delete_from_favoriteAction(modeladmin, request, queryset):
+    model = modeladmin.model
+    model_name = model._meta.model_name
+    app_label = model._meta.app_label
+    try:
+        ctype_id = ContentType.objects.get(app_label=app_label, 
+                                            model=model_name).id
+    except ContentType.DoesNotExist:
+        pass
+    else:
+        qs_ids = [q.id for q in queryset]
+        Favorite.objects.filter(user_id=request.user.id,
+                                ctype_id=ctype_id,
+                                item__in=qs_ids).delete()
+
+def export_as_csvAction(fields=None, exclude=None, header=True):
     """
     This function returns an export csv action
     'fields' and 'exclude' work like in django ModelForm
@@ -12,7 +48,8 @@ def export_as_csv_action(description="Export selected objects as CSV file",
 
     from itertools import chain
 
-    def export_as_csv(modeladmin, request, queryset):
+    @action(_('Export CSV'), _('Export CSV'))
+    def export_as_csvAction(modeladmin, request, queryset):
         """
         Generic csv export admin action.
         """
@@ -41,5 +78,4 @@ def export_as_csv_action(description="Export selected objects as CSV file",
 
             writer.writerow(row)
         return response
-    export_as_csv.short_description = description
-    return export_as_csv
+    return export_as_csvAction
