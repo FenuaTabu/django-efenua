@@ -5,7 +5,7 @@ from django.contrib.contenttypes.models import ContentType
 from efenua.decorators import action
 
 @action(_('Ajouter aux favoris'), _('Ajouter aux favoris'))
-def add_to_favoriteAction(modeladmin, request, queryset):
+def make_add_to_favorite(modeladmin, request, queryset):
     model = modeladmin.model
     model_name = model._meta.model_name
     app_label = model._meta.app_label
@@ -24,7 +24,7 @@ def add_to_favoriteAction(modeladmin, request, queryset):
             Favorite.objects.create(user_id=request.user.id, item=q.id, ctype_id=ctype_id)
 
 @action(_('Enlever des favoris'), _('Enlever Des favoris'))
-def delete_from_favoriteAction(modeladmin, request, queryset):
+def make_delete_from_favorite(modeladmin, request, queryset):
     model = modeladmin.model
     model_name = model._meta.model_name
     app_label = model._meta.app_label
@@ -39,7 +39,7 @@ def delete_from_favoriteAction(modeladmin, request, queryset):
                                 ctype_id=ctype_id,
                                 item__in=qs_ids).delete()
 
-def export_as_csvAction(fields=None, exclude=None, header=True):
+def make_export_as_csv(fields=None, exclude=None, header=True):
     """
     This function returns an export csv action
     'fields' and 'exclude' work like in django ModelForm

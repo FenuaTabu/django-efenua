@@ -27,10 +27,10 @@ Pour ajouter une action export CSV
 ```python
 #admin.py
 from efenua.models import EfenuaModelAdmin
-from efenua.actions import export_as_csvAction
+from efenua.actions import make_export_as_csv
 
 class FooAdmin(EfenuaModelAdmin):
-    actions = ['...', export_as_csvAction(fields=['title'])]
+    actions = ['...', make_export_as_csv(fields=['title'])]
 ```
 .
 # Favoris
@@ -58,10 +58,10 @@ Pour ajouter des actions favoris
 ```python
 #admin.py
 from efenua.models import EfenuaModelAdmin
-from efenua.actions import add_to_favoriteAction, delete_from_favoriteAction
+from efenua.actions import make_add_to_favorite, make_delete_from_favorite
 
 class FooAdmin(EfenuaModelAdmin):
-	actions = ['...', add_to_favoriteAction, delete_from_favoriteAction]
+	actions = ['...', make_add_to_favorite, make_delete_from_favorite]
 ```
 
 # Decorateurs
