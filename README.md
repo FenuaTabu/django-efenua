@@ -18,10 +18,15 @@ MIDDLEWARE_CLASSES = [
 ]
 ```
 
-Mettre à jour la base de donnée avec les commande suivantes
+Mettre à jour la base de donnée avec les commandes suivantes
 ```sh
 python manage.py makemigrations efenua
 python manage.py migrate efenua
+```
+
+Ajouter l'url suivante dans le projet
+```python
+url(r'^efenua/', include('efenua.urls')),
 ```
 
 # Fonctionnaliés
