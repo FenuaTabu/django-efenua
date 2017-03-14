@@ -18,9 +18,15 @@ MIDDLEWARE_CLASSES = [
 ]
 ```
 
-# Fonctionnali�s
+Mettre à jour la base de donnée avec les commande suivantes
+```sh
+python manage.py makemigrations efenua
+python manage.py migrate efenua
+```
+
+# Fonctionnaliés
 - Nouvelle interface ADMIN
-- Am�lioration du `raw_id_fields`
+- Amélioration du `raw_id_fields`
 
 # Export
 Pour ajouter une action export CSV
