@@ -1,7 +1,8 @@
 from django.template import RequestContext
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, redirect
 from django.apps import apps
 from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.contenttypes.models import ContentType
 
 from django.core.urlresolvers import reverse
 from efenua.models import Favorite
