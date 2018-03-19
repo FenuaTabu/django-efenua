@@ -4,24 +4,21 @@ from django.contrib import admin
 from django.conf.urls import url
 from django.views.generic import View
 from django.views.generic.detail import SingleObjectMixin
-
 from django.http import Http404, HttpResponseRedirect
 from django.http.response import HttpResponseBase
-from django.core.urlresolvers import reverse
-
+from django.urls import reverse
 from django.contrib.admin.widgets import ManyToManyRawIdWidget, ForeignKeyRawIdWidget
 from django.contrib.admin.sites import site
-
-from django import forms
 from django.utils.html import escape
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.auth.models import User
 from django.db import models
 from django.conf import settings
+
 from efenua.middleware.current_user import get_current_user
 
+
 class Favorite(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, default=get_current_user, editable = False)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, default=get_current_user, editable=False)
     ctype = models.ForeignKey(ContentType, related_name='ctype_favorite')
     item = models.PositiveIntegerField()
     deadline = models.DateField(null=True, blank=True)
@@ -30,6 +27,7 @@ class Favorite(models.Model):
     
     class Meta:
         unique_together = ('user', 'ctype', 'item')
+
 
 class VerboseForeignKeyRawIdWidget(ForeignKeyRawIdWidget):
     def label_for_value(self, value):
@@ -47,6 +45,7 @@ class VerboseForeignKeyRawIdWidget(ForeignKeyRawIdWidget):
                 return '<a href="%s" class="label label-default">%s</a>' % (change_url, escape(obj))
         except (ValueError, self.rel.to.DoesNotExist):
             return '???'
+
 
 class VerboseManyToManyRawIdWidget(ManyToManyRawIdWidget):
     def label_for_value(self, value):
@@ -68,6 +67,7 @@ class VerboseManyToManyRawIdWidget(ManyToManyRawIdWidget):
             except self.rel.to.DoesNotExist:
                 str_values += [u'???']
         return u', '.join(str_values)
+
 
 class EfenuaModelAdmin(admin.ModelAdmin):
     objectactions = []
@@ -169,7 +169,8 @@ class EfenuaModelAdmin(admin.ModelAdmin):
             else:
                 custom_attrs[k] = v
         return standard_attrs, custom_attrs
-        
+
+
 class ModelToolsView(SingleObjectMixin, View):
     back = None
     model = None

@@ -25,7 +25,8 @@ def action(label, short_description=None):
         return takes_instance_or_queryset(func)
 
     return decorator
-    
+
+
 def field(short_description, admin_order_field=None, allow_tags=None):
     """Decorateur qui facilite la definition d action """
     

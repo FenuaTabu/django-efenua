@@ -4,6 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
 from efenua.decorators import action
 
+
 @action(_('Ajouter aux favoris'), _('Ajouter aux favoris'))
 def make_add_to_favorite(modeladmin, request, queryset):
     model = modeladmin.model
@@ -23,6 +24,7 @@ def make_add_to_favorite(modeladmin, request, queryset):
         for q in queryset:
             Favorite.objects.create(user_id=request.user.id, item=q.id, ctype_id=ctype_id)
 
+
 @action(_('Enlever des favoris'), _('Enlever Des favoris'))
 def make_delete_from_favorite(modeladmin, request, queryset):
     model = modeladmin.model
@@ -38,6 +40,7 @@ def make_delete_from_favorite(modeladmin, request, queryset):
         Favorite.objects.filter(user_id=request.user.id,
                                 ctype_id=ctype_id,
                                 item__in=qs_ids).delete()
+
 
 def make_export_as_csv(fields=None, exclude=None, header=True):
     """

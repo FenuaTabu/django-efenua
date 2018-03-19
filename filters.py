@@ -5,6 +5,7 @@ from django.contrib.contenttypes.models import ContentType
 
 from efenua.models import Favorite
 
+
 class FavoriteFilter(SimpleListFilter):
 
     title = _('Favorite')
