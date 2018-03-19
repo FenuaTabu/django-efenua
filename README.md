@@ -10,20 +10,6 @@ Ajouter dans INSTALLED_APPS
 ]
 ```
 
-Ajouter dans MIDDLEWARE_CLASSES
-```python
-MIDDLEWARE_CLASSES = [
-    ...
-    'efenua.middleware.current_user.CurrentUserMiddleware',
-]
-```
-
-Mettre à jour la base de donnée avec les commandes suivantes
-```sh
-python manage.py makemigrations efenua
-python manage.py migrate efenua
-```
-
 Ajouter l'url suivante dans le projet
 ```python
 url(r'^efenua/', include('efenua.urls')),
@@ -31,7 +17,7 @@ url(r'^efenua/', include('efenua.urls')),
 
 # Fonctionnaliés
 - Nouvelle interface ADMIN
-- Amélioration du `raw_id_fields`
+- Decorateur pour les actions
 
 # Export
 Pour ajouter une action export CSV
@@ -42,37 +28,6 @@ from efenua.actions import make_export_as_csv
 
 class FooAdmin(EfenuaModelAdmin):
     actions = ['...', make_export_as_csv(fields=['title'])]
-```
-.
-# Favoris
-Pour ajouter une colonne favorie dans list_view
-```python
-#admin.py
-from efenua.models import EfenuaModelAdmin
-from efenua.fields import favoriteField
-
-class FooAdmin(EfenuaModelAdmin):
-    list_display = ['...', favoriteField]
-```
-
-Pour ajouter un filtre favori
-```python
-#admin.py
-from efenua.models import EfenuaModelAdmin
-from efenua.filters import FavoriteFilter
-
-class FooAdmin(EfenuaModelAdmin):
-	list_filter = ['...', FavoriteFilter]
-```
-
-Pour ajouter des actions favoris
-```python
-#admin.py
-from efenua.models import EfenuaModelAdmin
-from efenua.actions import make_add_to_favorite, make_delete_from_favorite
-
-class FooAdmin(EfenuaModelAdmin):
-	actions = ['...', make_add_to_favorite, make_delete_from_favorite]
 ```
 
 # Decorateurs
